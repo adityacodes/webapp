@@ -15,24 +15,53 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/login','Adminauth\AuthController@showLoginForm');
-Route::post('/admin/login','Adminauth\AuthController@login');
-Route::get('/admin/password/reset/{token?}','Adminauth\PasswordController@showResetForm');
-Route::post('/admin/password/reset', 'Adminauth\PasswordController@reset');
 
-Route::group(['middleware' => ['admin']], function () {
-    Route::get('/admin/logout','Adminauth\AuthController@logout');
-    Route::get('admin/register', 'Adminauth\AuthController@showRegistrationForm');
-    Route::post('admin/register', 'Adminauth\AuthController@register');
+/*
+|--------------------------------------------------------------------------
+| Admin Login Routes
+|--------------------------------------------------------------------------
+|
+*/
+	Route::group(['middleware' => 'web', 'prefix' => 'admin'], function () {
+	    Route::get('login','Adminauth\AuthController@showLoginForm');
+		Route::post('login','Adminauth\AuthController@login');
+		Route::get('password/reset/{token?}','Adminauth\PasswordController@showResetForm');
+		Route::post('password/reset', 'Adminauth\PasswordController@reset');
+	});
+	Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
+	    Route::get('logout','Adminauth\AuthController@logout');
+	    Route::get('register', 'Adminauth\AuthController@showRegistrationForm');
+	    Route::post('register', 'Adminauth\AuthController@register');
+	});
 
-    Route::get('/admin', 'Admin\Employee@index');
+/*
+|--------------------------------------------------------------------------
+| User Login Routes
+|--------------------------------------------------------------------------
+|
+*/
+	Route::group(['middleware' => 'web'], function () {
+	    Route::auth();
+	});
+
+
+
+Route::group(['namespace' => 'User', 
+			'prefix' => 'user', 
+			'middleware' => 'auth'], function() {
+
+	Route::get('/dashboard', 'UserController@index');
+
 });
 
+Route::group([ 'prefix' => 'template', 
+			'middleware' => 'web'], function() {
 
+	Route::get('{name}', 'TemplateController@template');
+	Route::get('layouts/{layout}', 'TemplateController@templatelayouts');
+	Route::get('forms/{name}', 'TemplateController@templateforms');
+	Route::get('pages/{name}', 'TemplateController@templatepages');
+	Route::get('tables/{name}', 'TemplateController@templatetables');
+	Route::get('ui/elements/{name}', 'TemplateController@templateuielements');
 
-Route::group(['middleware' => 'web'], function () {
-    Route::auth();
-	Route::get('/home', 'HomeController@index');
-	
-	
 });
