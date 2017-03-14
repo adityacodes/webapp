@@ -4,23 +4,20 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="This is a online examination system">
+    <meta name="description" content="This is a online examination system.">
     <meta name="keywords" content="Exam system|exam|exams">
-    <link rel="icon" href="#/uploads/settings/I8GYi9XN7OrjAi2.png" type="image/x-icon">
-    <title> Dashboard</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <title>@yield('title') | GTP TUTORIALS</title>
     <!-- Bootstrap Core CSS --> 
     <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('user/css/bootstrap-datepicker.min.css')}}">
     <link href="{{asset('user/css/sweetalert.css')}}" rel="stylesheet" type="text/css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <!-- Morris Charts CSS --> 
     <link href="{{asset('user/css/morris.css')}}" rel="stylesheet">
-    <!-- Custom CSS --> 
     <link href="{{asset('user/css/sb-admin.css')}}" rel="stylesheet">
-    <!-- Custom Fonts --> 
     <link href="{{asset('user/css/custom-fonts.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('user/css/materialdesignicons.css')}}" rel="stylesheet" type="text/css">
-    {{-- <link href="{{asset('font-awesome.min.css')}}" rel="stylesheet" type="text/css"> --}}
 
     @yield('stylesheets')
 

@@ -1,5 +1,6 @@
 @extends('layouts.auth')
 
+@section('title', 'USER LOGIN')
 
 @section('content')
     <div class="login-content">
@@ -23,7 +24,7 @@
                     </li>
                 </ul>
         </div>  
-        <form method="POST" action="{{url('login')}}" accept-charset="UTF-8" name="loginForm" novalidate="" class="loginform ng-valid-minlength ng-dirty ng-valid-parse ng-valid ng-valid-required">
+        <form method="POST" action="{{url('user/login')}}" accept-charset="UTF-8" name="loginForm" novalidate="" class="loginform ng-valid-minlength ng-dirty ng-valid-parse ng-valid ng-valid-required">
                 {{Form::token()}}
 
                 <div class="input-group">
@@ -83,7 +84,7 @@
 
         <div class="footer">
             <a href="javascript:void(0);" class="pull-left" data-toggle="modal" data-target="#myModal"><i class="icon icon-question"></i> Forgot Password</a>
-            <a href="{{url('register')}}" class="pull-right"><i class="icon icon-add-user"></i> Register</a>
+            <a href="{{url('user/register')}}" class="pull-right"><i class="icon icon-add-user"></i> Register</a>
         </div>
 
     </div>

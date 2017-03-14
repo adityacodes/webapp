@@ -1,5 +1,8 @@
 @extends('layouts.auth')
 
+@section('title', 'USER REGISTRATION')
+
+
 @section('stylesheets')
 
 <style type="text/css">
@@ -40,7 +43,7 @@
                 </li>
             </ul>
         </div> 
-        <form method="POST" action="{{url('register')}}" accept-charset="UTF-8" name="registrationForm" novalidate="" class="loginform">
+        <form method="POST" action="{{url('user/register')}}" accept-charset="UTF-8" name="registrationForm" novalidate="" class="loginform">
             {{Form::token()}}
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1"><i class="icon icon-user"></i></span>
@@ -128,7 +131,7 @@
                     ng-disabled='!registrationForm.$valid'>Register Now</button>
                 </div>
             </form>
-            <a href="{{url('login')}}"><p class="text-center">I Am Having Account </a></p>
+            <a href="{{url('user/login')}}"><p class="text-center">I Am Having Account </a></p>
         </div>
 
 

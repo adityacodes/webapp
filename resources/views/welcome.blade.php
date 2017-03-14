@@ -1,5 +1,6 @@
 @extends('layouts.auth')
 
+
 @section('stylesheets')
 <style type="text/css">
       .bs-wizard {margin-top: 40px;}
@@ -26,6 +27,7 @@
       /*END Form Wizard*/
     </style>
 @endsection
+
 
 @section('content')
 

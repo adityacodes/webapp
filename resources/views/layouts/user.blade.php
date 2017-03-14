@@ -82,7 +82,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="#/logout">
+						<a href="{{url('user/logout')}}">
 							<sapn>Logout</sapn>
 						</a>
 					</li>
