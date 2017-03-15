@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/gtpadmin/dashboard';
     protected $guard = 'admin';
     
     public function showLoginForm()
