@@ -67,8 +67,44 @@ Route::group(['namespace' => 'User',
 			'middleware' => 'auth'], function() {
 
 	Route::get('/dashboard', [
-		'as' => 'dashboard',
+		'as' => 'user.dashboard',
 		'uses' => 'UserController@index'
+	]);
+	Route::get('/courses', [
+		'as' => 'user.courses',
+		'uses' => 'UserController@courses'
+	]);
+	Route::get('/messages', [
+		'as' => 'user.messages',
+		'uses' => 'UserController@messages'
+	]);
+	Route::get('/messages/{id}', [
+		'as' => 'messages.show',
+		'uses' => 'UserController@messagesById'
+	]);
+	Route::get('/settings', [
+		'as' => 'user.settings',
+		'uses' => 'UserController@settings'
+	]);
+	Route::get('/notifications', [
+		'as' => 'user.notifications',
+		'uses' => 'UserController@notifications'
+	]);
+	Route::get('/change-password', [
+		'as' => 'user.changepassword',
+		'uses' => 'UserController@changepassword'
+	]);
+	Route::get('/feedback', [
+		'as' => 'user.feedback',
+		'uses' => 'UserController@feedback'
+	]);
+	Route::get('/profile', [
+		'as' => 'user.profile',
+		'uses' => 'UserController@profile'
+	]);
+	Route::get('/{course}/modules', [
+		'as' => 'user.modules',
+		'uses' => 'UserController@modules'
 	]);
 
 });
@@ -88,5 +124,8 @@ Route::group(['namespace' => 'Admin',
 		'as' => 'dashboard',
 		'uses' => 'AdminController@index'
 	]);
+
+	Route::resource('/post', 'PostController');
+	Route::resource('/notification', 'NotificationController');
 
 });

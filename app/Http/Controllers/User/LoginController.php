@@ -27,7 +27,7 @@ class LoginController extends Controller
 	      if ( ! Auth::attempt($credentials))
 	      {
 	        Session::flash('warning', 'Username or password incorrect.');
-	        return redirect('/');
+	        return redirect('/user/login');
 	      }
 	      Session::flash('success', 'You have successfully logged in.!');
 	      return redirect()->intended('user/dashboard');

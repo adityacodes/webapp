@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- saved from url=(0039)#/dashboard --> 
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -7,12 +7,14 @@
 	<meta name="description" content="This is a online examination system">
 	<meta name="keywords" content="Exam system|exam|exams">
 	<link rel="icon" href="#/uploads/settings/I8GYi9XN7OrjAi2.png" type="image/x-icon">
-	<title>@yield('title') | Dashboard</title>
+	<title>@yield('title') | User Panel</title>
 	<!-- Bootstrap Core CSS --> 
 	<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 	<link rel="stylesheet" href="{{asset('user/css/bootstrap-datepicker.min.css')}}">
 	<link href="{{asset('user/css/sweetalert.css')}}" rel="stylesheet" type="text/css">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link href="{{asset('user/css/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+
 	<!-- Morris Charts CSS --> 
 	<link href="{{asset('user/css/morris.css')}}" rel="stylesheet">
 	<!-- Custom CSS --> 
@@ -20,6 +22,8 @@
 	<!-- Custom Fonts --> 
 	<link href="{{asset('user/css/custom-fonts.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('user/css/materialdesignicons.css')}}" rel="stylesheet" type="text/css">
+
+	@yield('stylesheets')
 	{{-- <link href="{{asset('font-awesome.min.css')}}" rel="stylesheet" type="text/css"> --}}
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --> 
@@ -62,7 +66,7 @@
 				</div>
 				<ul class="dropdown-menu">
 					<li>
-						<a href="{{url('user/my-profile')}}">
+						<a href="{{url('user/profile')}}">
 							<sapn>My Profile</sapn>
 						</a>
 					</li>
@@ -77,7 +81,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="#/feedback/send">
+						<a href="{{url('user/feedback')}}">
 							<sapn>Feedback</sapn>
 						</a>
 					</li>
@@ -94,8 +98,8 @@
 	<aside class="left-sidebar">
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav side-nav ">
-				<li class="active"> <a href="#/"> <i class="icon-home"></i> Dashboard </a> </li>
-				<li> <a href="{{url('user/courses')}}"> <i class="fa fa-th-list"></i> Courses </a> </li>
+				<li class="{{Request::is('user/dashboard') ? 'active':''}}"> <a href="{{url('user/dashboard')}}"> <i class="icon-home"></i> Dashboard </a> </li>
+				<li class="{{Request::is('user/courses') ? 'active':''}}"> <a href="{{url('user/courses')}}"> <i class="fa fa-th-list"></i> Courses </a> </li>
 				<li>
 					<a data-toggle="collapse" data-target="#exams"><i class=" icon-exams"></i> Exams </a> 
 					<ul id="exams" class="collapse sidemenu-dropdown">
@@ -103,119 +107,49 @@
 						<li><a href="{{url('user/exam/list')}}"> <i class="fa fa-list-ol"></i>Exam Series</a></li>
 					</ul>
 				</li>
-				<li>
+				<li class="{{Request::is('user/analysis/*') ? 'active':''}}">
 					<a data-toggle="collapse" data-target="#analysis"> <i class="fa fa-bar-chart" aria-hidden="true"></i> Analysis </a> 
 					<ul id="analysis" class="collapse sidemenu-dropdown">
 						<li>
-							<a href="{{url('student/analysis')}}"> 
+							<a href="#{{url('user/analysis/by-course')}}"> 
 								<i class="fa fa-key"></i>By Course
 							</a>
 						</li>
 						<li>
-							<a href="#/student/analysis/by-exam/charles"> 
+							<a href="#{{url('user/analysis/by-exam')}}"> 
 								<i class="fa fa-suitcase"></i>By Exam
 							</a>
 						</li>
 						<li>
-							<a href="#/exams/student/exam-attempts/charles"> 
+							<a href="#{{url('user/analysis/exam-attempts')}}"> 
 								<i class="fa fa-history"></i>History 
 							</a>
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a data-toggle="collapse" data-target="#lms"><i class="icon-school-hub"></i> Lms </a> 
-					<ul id="lms" class="collapse sidemenu-dropdown">
-						<li>
-							<a href="#/learning-management/categories"> 
-								<i class="fa fa-random"></i>Categories</a>
-							</li>
-							<li>
-								<a href="#/learning-management/series"> 
-									<i class="fa fa-list-ol"></i>Series
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li> 
-						<a href="#/messages">
-							<i class="fa fa-comments-o" aria-hidden="true"></i> Messages 
-						</a> 
-					</li>
-					<li> 
-						<a href="#/payments/list/charles">
-							<i class="icon-history"></i> Subscriptions 
-						</a> 
-					</li>
-					<li> 
-						<a href="#/notifications/list">
-							<i class="fa fa-bell-o" aria-hidden="true"></i> Notifications 
-						</a> 
-					</li>
-				</ul>
-			</div>
+				<li class="{{Request::is('user/messages') ? 'active':''}}"> 
+					<a href="{{url('user/messages')}}">
+						<i class="fa fa-comments-o" aria-hidden="true"></i> Messages 
+					</a> 
+				</li>
+				<li> 
+					<a href="#/payments/list/charles">
+						<i class="icon-history"></i> Subscriptions 
+					</a> 
+				</li>
+				<li class="{{Request::is('user/notifications') ? 'active':''}}"> 
+					<a href="{{url('user/notifications')}}">
+						<i class="fa fa-bell-o" aria-hidden="true"></i> Notifications 
+					</a> 
+				</li>
+			</ul>
+		</div>
 	</aside>
 
 		<div id="page-wrapper">
-			<div class="container-fluid">
-
-
-				<div class="row">
-	                <div class="col-lg-12">
-	                    <h1 class="page-header">Dashboard</h1>
-	                </div>
-	                <!-- /.col-lg-12 -->
-	            </div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="card card-blue text-xs-center">
-							<div class="card-block">
-								<h4 class="card-title">29</h4>
-								<p class="card-text">Quiz Categories</p>
-							</div>
-							<a class="card-footer text-muted" href="#/exams/student/categories"> View All </a> 
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="card card-yellow text-xs-center">
-							<div class="card-block">
-								<h4 class="card-title">96</h4>
-								<p class="card-text">Quizzes</p>
-							</div>
-							<a class="card-footer text-muted" href="#/exams/student/exams/all"> View All </a> 
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="card card-green text-xs-center">
-							<div class="card-block">
-								<h4 class="card-title">14</h4>
-								<p class="card-text">Subjects</p>
-							</div>
-							<a class="card-footer text-muted" href="#/student/analysis/subject/charles"> View Analysis </a> 
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="panel panel-primary dsPanel">
-							<div class="panel-body">
-
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="panel panel-primary dsPanel">
-							<div class="panel-body">
-								#
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /.container-fluid --> 
-		</div>
+				@yield('content')
 		<!-- /#page-wrapper --> 
-	</div>
+		</div>
 	<!-- /#wrapper --> 
 
 		<!-- jQuery --> 

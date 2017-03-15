@@ -1,66 +1,77 @@
-@extends('admin.layouts.app')
+@extends('layouts.admin')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Admin Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/login') }}">
-                        {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+<!-- start: page -->
+        <section class="body-sign">
+            <div class="center-sign">
+                <a href="/" class="logo pull-left">
+                    {{-- <img src="assets/images/logo.png" height="54" alt="GTP Admin" /> --}}
+                    <h3>GTP ADMIN</h3>
+                </a>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                <div class="panel panel-sign">
+                    <div class="panel-title-sign mt-xl text-right">
+                        <h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Sign In</h2>
+                    </div>
+                    <div class="panel-body">
+                        <form action="{{ url('/gtpadmin/login') }}" method="POST">
+                            <div class="form-group mb-lg {{ $errors->has('email') ? ' has-error' : '' }}">
+                                <label>Email</label>
+                                <div class="input-group input-group-icon">
+                                    <input name="email" type="text" value="{{ old('email') }}" class="form-control input-lg" />
+                                    <span class="input-group-addon">
+                                        <span class="icon icon-lg">
+                                            <i class="fa fa-user"></i>
+                                        </span>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> Remember Me
-                                    </label>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-sign-in"></i>Admin Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ url('/admin/password/reset') }}">Forgot Your Password?</a>
+                            <div class="form-group mb-lg {{ $errors->has('password') ? ' has-error' : '' }}">
+                                <div class="clearfix">
+                                    <label class="pull-left">Password</label>
+                                    <a href="{{ url('/gtpadmin/password/reset') }}" class="pull-right">Lost Password?</a>
+                                </div>
+                                <div class="input-group input-group-icon">
+                                    <input name="password" type="password" class="form-control input-lg" />
+                                    <span class="input-group-addon">
+                                        <span class="icon icon-lg">
+                                            <i class="fa fa-lock"></i>
+                                        </span>
+                                    </span>
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            {{ csrf_field() }}
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="checkbox-custom checkbox-default">
+                                        <input id="RememberMe" name="remember" type="checkbox"/>
+                                        <label for="RememberMe">Remember Me</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <button type="submit" class="btn btn-primary hidden-xs">Sign In</button>
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Sign In</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
+
+                <p class="text-center text-muted mt-md mb-md">&copy; Copyright {{date('Y')}}. All Rights Reserved.</p>
             </div>
-        </div>
-    </div>
-</div>
+        </section>
+        <!-- end: page -->
 @endsection

@@ -20,7 +20,7 @@ class AuthController extends Controller
     {
         if (Auth::guard('admin')->check())
         {
-            return redirect('/admin');
+            return redirect('/gtpadmin/dashboard');
         }
         
         return view('admin.auth.login');
