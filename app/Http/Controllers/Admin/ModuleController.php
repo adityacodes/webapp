@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Module, Validator, Session, App\Course;
+use App\Module, Validator, Session, App\Course, File;
 
 class ModuleController extends Controller
 {
     private $globalvar = array(
             'mainname' => 'Module',
+            'i' => 1,
             'mainweb' => 'module',
             'model' => 'App\Module',
             'routeindex' => 'gtpadmin.module.index',
@@ -34,6 +35,7 @@ class ModuleController extends Controller
             'unpublishsuccess' => 'Module unpubslished successfully',
             'deletionsuccess' => 'Module deleted successfully',
             'filenotvalidmessage' => 'Uploaded file is not valid',
+            'createpagetitle' => 'Create Module',
             'editpagetitle' => 'Edit Module',
             'indexpagetitle' => 'All Modules',
             'totalitems' => 'Total Modules',
@@ -42,33 +44,32 @@ class ModuleController extends Controller
             'type' => 'text'
     );
 
-
-    private $indexcolumns = array('#','Title','Question','Answer', 'Created At','Actions');
-
-    private $validatewithslug = array(
-            'title' => 'required|max:255',
-            'slug'  => 'required|alpha_dash|min:5|max:255|unique:modules,slug',
-            'image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'subject' => 'required',
-            'body' => 'required',
-        );
-
     /*
      * database name of publish property or column.
      */
     private $resourcepublish = 'published';
-
     /*
      * database name of image property or column.
      */
     private $imageresource = 'image';
 
-
-
     /*
      * database name of slug property or column.
      */
-    private $slugresource = 'slug';
+    private $slugresource = 'module_id';
+
+    private $dbresource = array('id' => 'ID', 'module_id' => 'Module ID', 'name' => 'Module Name', 'image' => 'Module Image', 'course_id' => 'Course Name');
+
+    private $indexcolumns = array('#','Module ID','Module Name','Course Name', 'Created At','Actions');
+
+    private $validatewithslug = array(
+            'module_id'  => 'required|alpha_dash|min:5|max:255|unique:modules,module_id',
+            'name' => 'required|max:255',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'course_id' => 'required',
+        );
+
+    
 
     
     /**
@@ -79,6 +80,11 @@ class ModuleController extends Controller
     public function index()
     {
         $modules = $this->globalvar['model']::orderBy('id', 'desc')->paginate( $this->globalvar['modulesinindex']);
+        foreach($modules as &$module)
+        {
+          $course = Course::find($module->id);
+          $module->course_id = $course->name;
+        }
         return view($this->globalvar['viewindex'])
                       ->with('modules' , $modules)
                       ->with('globalvar', $this->globalvar)
@@ -92,7 +98,8 @@ class ModuleController extends Controller
      */
     public function create()
     {
-        $coursesavailable = Course::all();
+        $coursesavailable = Course::all()->pluck( 'name', 'id');
+        // var_dump((array)$coursesavailable);
         $formfields = array(array(
                         'label' => 'Module ID',
                         'icon' => 'fa-user',
@@ -102,8 +109,7 @@ class ModuleController extends Controller
                         'name' => 'module_id',
                         'options' => array(
                             'class' => 'form-control border-input',
-                            'placeholder' => 'Enter module slug here.',
-                            'disabled' => true
+                            'placeholder' => 'Enter module slug here.'
                           )
                         ),
                         array(
@@ -133,11 +139,10 @@ class ModuleController extends Controller
                         'type' => 'select',
                         'id' => 'course_id',
                         'name' => 'course_id',
-                        'coptions' => array('L' => 'Large', 'S' => 'Small'),
+                        'coptions' => $coursesavailable,
                         'value' => 'S',
                         'options' => array(
-                            'class' => 'form-control mb-md',
-                            'placeholder' => 'Hello this is a textarea'
+                            'class' => 'form-control mb-md'
                           )
                         )
                     );
@@ -198,7 +203,13 @@ class ModuleController extends Controller
     public function show($id)
     {
         $module = $this->globalvar['model']::find($id);
-        return view($this->globalvar['viewshow'])->with('module',$module)->with('globalvar', $this->globalvar);
+        $course = Course::find($module->course_id);
+        $module->course_id = $course->name;
+
+        return view($this->globalvar['viewshow'])
+                  ->with('module',$module)
+                  ->with('globalvar', $this->globalvar)
+                  ->with('dbresources', $this->dbresource);
     }
 
     /**
@@ -211,8 +222,61 @@ class ModuleController extends Controller
     {
         //find the module in the db ans save as a var
         $module = $this->globalvar['model']::find($id);
+
+        $coursesavailable = Course::all()->pluck( 'name', 'id');
+        // var_dump((array)$coursesavailable);
+        $formfields = array(array(
+                        'label' => 'Module ID',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'module_id',
+                        'value' => $module->module_id,
+                        'name' => 'module_id',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter module slug here.'
+                          )
+                        ),
+                        array(
+                        'label' => 'Module Name',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'name',
+                        'value' => $module->name,
+                        'name' => 'name',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter module name here.'
+                          )
+                        ),
+                      array(
+                        'label' => 'Module Image',
+                        'icon' => 'fa-user',
+                        'type' => 'file',
+                        'id' => 'image',
+                        'name' => 'image',
+                        'value' => $module->image,
+                        'placeholder' => '',
+                        ),
+                      array(
+                        'label' => 'Course ID',
+                        'icon' => 'fa-user',
+                        'type' => 'select',
+                        'id' => 'course_id',
+                        'name' => 'course_id',
+                        'coptions' => $coursesavailable,
+                        'value' => $module->course_id,
+                        'options' => array(
+                            'class' => 'form-control mb-md'
+                          )
+                        )
+                    );
+
         //return the view and pass in the var we previously created
-        return view($this->globalvar['viewedit'])->with('module',$module)->with('globalvar', $this->globalvar);
+        return view($this->globalvar['viewedit'])
+                        ->with('module',$module)
+                        ->with('globalvar', $this->globalvar)
+                        ->with('formfields', $formfields);
     }
 
     /**

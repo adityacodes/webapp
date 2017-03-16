@@ -18,6 +18,7 @@ class CreateModulesTable extends Migration
             $table->string('name');
             $table->string('image');
             $table->integer('course_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
