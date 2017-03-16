@@ -8,7 +8,7 @@
 
 @section('header')
 
-{{strtoupper($post->title)}}
+{{strtoupper($module->title)}}
 
 @endsection
 
@@ -25,7 +25,7 @@
 							<a href="#" class="fa fa-times"></a>
 						</div>
 	
-						<h2 class="panel-title">{{strtoupper($post->title)}}</h2>
+						<h2 class="panel-title">{{strtoupper($module->title)}}</h2>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -38,7 +38,7 @@
 	                                        <td>1</td>
 	                                        <td>{{$globalvar['mainname']}} ID</td>
 	                                        <td>
-	                                        	{{ $post->id}}
+	                                        	{{ $module->id}}
 	                                        </td>
 	                                    </tr>
 	                                    
@@ -46,8 +46,8 @@
 	                                        <td>2</td>
 	                                        <td>{{$globalvar['mainname']}} Image</td>
 	                                        <td>
-	                                        	@if(isset($post->image))
-	                                        		<img width="150" height="100" src="{{ url('/uploads/post') }}/{{$post->image}}">
+	                                        	@if(isset($module->image))
+	                                        		<img width="150" height="100" src="{{ url('/uploads/module') }}/{{$module->image}}">
 	                                        	@else
 	                                        		<i class="fa fa-user fa-5x"></i>
 	                                        	@endif
@@ -58,7 +58,7 @@
 	                                        <td>3</td>
 	                                        <td>Question</td>
 	                                        <td>
-	                                        	{{ $post->subject}}
+	                                        	{{ $module->subject}}
 	                                        </td>
 	                                    </tr>
 
@@ -66,7 +66,7 @@
 	                                        <td>4</td>
 	                                        <td>Answer</td>
 	                                        <td>
-	                                        	{{ $post->body}}
+	                                        	{{ $module->body}}
 	                                        </td>
 	                                    </tr>
 	                                </tbody>
@@ -86,26 +86,26 @@
 							<a href="#" class="fa fa-times"></a>
 						</div>
 
-						<h2 class="panel-title">{{strtoupper($post->title)}}</h2>
+						<h2 class="panel-title">{{strtoupper($module->title)}}</h2>
 					</div>
 				</div>
                 
             	<div class="panel-body">
                     <div class="well">
 	            		<p><b>URL:</b>
-	            		<a target="_blank" style="word-wrap: break-word;" href="{{ url('/post') }}/{{ $post->slug }}">{{ url('/'.$globalvar['mainweb'].'/'.$post->slug) }}
+	            		<a target="_blank" style="word-wrap: break-word;" href="{{ url('/module') }}/{{ $module->slug }}">{{ url('/'.$globalvar['mainweb'].'/'.$module->slug) }}
 	            		</a></p><br/>
-	            		<p><b>Created at:</b>{{ date('M j, Y H:iA', strtotime($post->created_at)) }}</p><br/>
-	            		<p><b>Updated at:</b>{{ date('M j, Y H:iA', strtotime($post->updated_at)) }}</p><br/>
+	            		<p><b>Created at:</b>{{ date('M j, Y H:iA', strtotime($module->created_at)) }}</p><br/>
+	            		<p><b>Updated at:</b>{{ date('M j, Y H:iA', strtotime($module->updated_at)) }}</p><br/>
 
 	            	</div>
 
 	            	<div>
 	            	
-	            		<a class="action" href="{{ route($globalvar['routeedit'], $post->id) }}">
+	            		<a class="action" href="{{ route($globalvar['routeedit'], $module->id) }}">
 	            			<button class="btn btn-primary btn-block"><i class="ti-pencil"></i> Edit</button>
 	            		</a><br/>
-	            		{!! Form::open(['route' => [$globalvar['routedestroy'], $post->id], 'method' =>'DELETE', 'style' => 'margin-top: -15px;']) !!}
+	            		{!! Form::open(['route' => [$globalvar['routedestroy'], $module->id], 'method' =>'DELETE', 'style' => 'margin-top: -15px;']) !!}
 		            			<button class="btn btn-danger btn-block"><i class="ti-close"></i> Delete</button>
 	            		{!! Form::close() !!}<br/>
 	            		<a class="action" href="{{ route($globalvar['routeindex']) }}">

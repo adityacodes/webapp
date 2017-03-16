@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('subject');
             $table->text('body');
             $table->boolean('published')->default(0);
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->integer('module_id');
             $table->timestamps();
         });

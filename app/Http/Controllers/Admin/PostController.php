@@ -11,14 +11,16 @@ use Session, Auth, Validator, File;
 
 class PostController extends Controller {
 
-    private $uploadPath = 'uploads/post';
 
     public $globalvar = array(
+            'mainname' => 'Post',
+            'mainweb' => 'post',
             'model' => 'App\Post',
             'routeindex' => 'gtpadmin.post.index',
             'routecreate' => 'gtpadmin.post.create',
             'routedestroy' => 'gtpadmin.post.destroy',
             'routeedit' => 'gtpadmin.post.edit',
+            'routepublish' => 'gtpadmin.post.publish',
             'routeupdate' => 'gtpadmin.post.update',
             'routeunpublish' => 'gtpadmin.post.unpublish',
             'routestore' => 'gtpadmin.post.store',
@@ -31,18 +33,37 @@ class PostController extends Controller {
             'creationsuccess' => 'Post created successfully',
             'updationsuccess' => 'Post updated successfully',
             'publishsuccess' => 'Post pubslished successfully',
+            'unpublishsuccess' => 'Post unpubslished successfully',
             'deletionsuccess' => 'Post deleted successfully',
-            'filenotvalidmessage' => 'Uploaded file is not valid'
+            'filenotvalidmessage' => 'Uploaded file is not valid',
+            'editpagetitle' => 'Edit Post',
+            'indexpagetitle' => 'All Posts',
+            'totalitems' => 'Total Posts',
+            'postsinindex' => 5,
+            'uploadpath' => 'uploads/post'
     );
+
+    private $indexcolumns = array('#','Title','Question','Answer', 'Created At','Actions');
 
     private $validatewithslug = array(
             'title' => 'required|max:255',
             'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
-            'post_image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'subject' => 'required',
             'body' => 'required',
         );
 
+    /*
+     * database name of publish property or column.
+     */
+    private $resourcepublish = 'published';
+
+    /*
+     * database name of image property or column.
+     */
+    private $imageresource = 'image';
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -50,8 +71,11 @@ class PostController extends Controller {
      */
     public function index()
     {
-        $posts = $this->globalvar['model']::orderBy('id', 'desc')->paginate(5);
-        return view($this->globalvar['viewindex'])->withPosts($posts)->with('globalvar', $this->globalvar);
+        $posts = $this->globalvar['model']::orderBy('id', 'desc')->paginate( $this->globalvar['postsinindex']);
+        return view($this->globalvar['viewindex'])
+                      ->withPosts($posts)
+                      ->with('globalvar', $this->globalvar)
+                      ->with('indexcolumns', $this->indexcolumns);
     }
 
     /**
@@ -80,17 +104,23 @@ class PostController extends Controller {
                         ->withInput();
           }
 
-          $resourceimage = 'post_image';
+          $resourceimage = $this->imageresource;
           $post = '';
           $imageName = $this->checkimageandsave($request, $post ,$resourceimage);
 
         //2. Store in the DB
         $post = new $this->globalvar['model'];
-        $post->image = $imageName;
-        $post->subject = $request->subject;
-        $post->title = $request->title;
-        $post->slug = $request->slug;
-        $post->body = $request->body;
+
+        foreach ($this->validatewithslug as $validkey => $value) 
+        {
+            if($validkey==$this->imageresource){
+                $post->$validkey = $imageName;
+            }
+            else{
+              $post->$validkey = $request->$validkey;
+            }
+
+        }
 
         $post->save();
 
@@ -109,7 +139,7 @@ class PostController extends Controller {
     public function show($id)
     {
         $post = $this->globalvar['model']::find($id);
-        return view($this->globalvar['viewshow'])->withPost($post);
+        return view($this->globalvar['viewshow'])->withPost($post)->with('globalvar', $this->globalvar);
     }
 
     /**
@@ -138,7 +168,6 @@ class PostController extends Controller {
         $post = $this->globalvar['model']::find($id);
 
         $validationrules = $this->validatewithslug;
-        
 
         if ($request->input('slug') == $post->slug ) {
             unset($validationrules['slug']);
@@ -149,17 +178,23 @@ class PostController extends Controller {
             $this->validate($request, $validationrules);
         }
 
-        $resourceimage = 'post_image';
+        $resourceimage = $this->imageresource;
         $imageName = $this->checkimageandsave($request, $post ,$resourceimage);
         
         
 
         //save the data
-        $post->title = $request->title;
-        $post->slug = $request->slug;
-        if(!empty($imageName))
-            $post->image = $imageName;
-        $post->body = $request->body;
+        foreach ($validationrules as $validkey => $value) 
+        {
+            if($validkey==$this->imageresource){
+              if(!empty($imageName))
+                $post->$validkey = $imageName;
+            }
+            else{
+              $post->$validkey = $request->$validkey;
+            }
+
+        }
 
         $post->save();
 
@@ -179,7 +214,8 @@ class PostController extends Controller {
     {
 
         $post = $this->globalvar['model']::find($id);
-        File::delete($this->uploadPath.'/'.$post->image);
+        $resourceimage = $this->imageresource;
+        File::delete($this->globalvar['uploadpath'].'/'.$post->$resourceimage);
         $post->delete();
 
         Session::flash('Success', $this->globalvar['deletionsuccess']);
@@ -190,10 +226,22 @@ class PostController extends Controller {
     public function publish($id)
     {
         $post = $this->globalvar['model']::find($id);
-        $post->publish = 1;
+        $publishresource = $this->resourcepublish;
+        $post->$publishresource = 1;
         $post->save();
 
         Session::flash('Success', $this->globalvar['publishsuccess']);
+        return redirect()->route($this->globalvar['routeindex']);
+    }
+
+    public function unpublish($id)
+    {
+        $post = $this->globalvar['model']::find($id);
+        $publishresource = $this->resourcepublish;
+        $post->$publishresource = 0;
+        $post->save();
+
+        Session::flash('Success', $this->globalvar['unpublishsuccess']);
         return redirect()->route($this->globalvar['routeindex']);
     }
 
@@ -205,9 +253,9 @@ class PostController extends Controller {
             if($request->file($resourceimage)->isValid())
             {
                 if(!empty($post))
-                    File::delete($this->uploadPath.'/'.$post->image);
+                    File::delete($this->globalvar['uploadpath'].'/'.$post->image);
                 $imageName = time().'.'.$request->file($resourceimage)->getClientOriginalExtension();
-                $request->file($resourceimage)->move($this->uploadPath, $imageName);
+                $request->file($resourceimage)->move($this->globalvar['uploadpath'], $imageName);
 
                 return $imageName;
                 

@@ -130,9 +130,13 @@ Route::group(['namespace' => 'Admin',
 	Route::resource('/module', 'ModuleController');
 	Route::resource('/course', 'CourseController');
 
-	Route::get('/notice/publish/{id}',[
-		'as'=>'gtpadmin.notice.publish',
-		'uses'=>'AdminController@publish'
+	Route::get('/post/publish/{id}',[
+		'as'=>'gtpadmin.post.publish',
+		'uses'=>'PostController@publish'
+	]);
+	Route::get('/post/unpublish/{id}',[
+		'as'=>'gtpadmin.post.unpublish',
+		'uses'=>'PostController@unpublish'
 	]);
 
 

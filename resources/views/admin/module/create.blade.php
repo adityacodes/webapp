@@ -1,8 +1,8 @@
 @extends('admin.layouts.apanel')
 
-@section('title',' Create New Post')
+@section('title',' Create New Module')
 
-@section('header',' Create New Post')
+@section('header',' Create New Module')
 
 @section('content')
     <div class="row">
@@ -13,13 +13,14 @@
 			    	{!! Form::open(array('route' => $globalvar['routestore'], 'class' => 'form-horizontal form-bordered', 'data-parsley-validate' => '', 'enctype' => 'multipart/form-data', 'autocomplete' => 'off')) !!}
 
 			    				<div class="form-group">
-									<label class="col-md-3 control-label">Post Title:</label>
+									<label class="col-md-3 control-label">{{$globalvar['mainname']}} Title:</label>
 									<div class="col-md-6">
 										<div class="input-group input-group-icon">
 											<span class="input-group-addon">
 												<span class="icon"><i class="fa fa-user"></i></span>
 											</span>
 											{!! Form::text('title', null, array('class' => 'form-control border-input', 'id' => 'title', 'placeholder' => 'Enter title here','maxlength' => '255' )) !!}
+											<input type="{{$globalvar['type']}}" class="form-control border-input" id="title" name="title" placeholder="Enter title here." maxlength="" minlength="" >
 										</div>
 									</div>
 								</div>
@@ -37,7 +38,7 @@
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-3 control-label">Post Image:</label>
+									<label class="col-md-3 control-label">{{$globalvar['mainname']}} Image:</label>
 									<div class="col-md-6">
 										<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
 											<div class="input-append">
@@ -88,7 +89,7 @@
 			                    </div>
 			                    <div class="form-group">
 			                    	{!! Html::linkRoute($globalvar['routeindex'], 'Cancel', '', array('class' =>'btn pull-down btn-warning btn-lg col-lg-2 col-md-offset-2 text-center')) !!}
-				                    {!! Form::submit('Create Post', array('class' => 'btn pull-down btn-success btn-lg col-lg-2 col-md-offset-3 col-xs-offset-3 text-center', 'id' => 'submit'  )) !!}
+				                    {!! Form::submit('Create'.$globalvar['mainname'], array('class' => 'btn pull-down btn-success btn-lg col-lg-2 col-md-offset-3 col-xs-offset-3 text-center', 'id' => 'submit'  )) !!}
 				                </div>
 					{!! Form::close() !!}
 					</h4>

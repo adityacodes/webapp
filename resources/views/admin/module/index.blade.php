@@ -1,8 +1,8 @@
 @extends('admin.layouts.apanel')
 
-@section('title',' All Posts')
+@section('title',' All modules')
 
-@section('header',' All Posts')
+@section('header',' All modules')
 
 @section('content')
 
@@ -19,10 +19,10 @@
 
 						{{$globalvar['indexpagetitle']}}
 
-						<a href="{{ route($globalvar['routecreate']) }}" class="btn btn-success col-md-offset-9"><i class="glyphicon glyphicon-plus"></i> NEW POST</a>
+						<a href="{{ route($globalvar['routecreate']) }}" class="btn btn-success col-md-offset-9"><i class="glyphicon glyphicon-plus"></i> NEW module</a>
 			            <div >
 			            	<b>{{$globalvar['totalitems']}} : </b> 
-			            	<span class="badge label-success">{{$posts->total()}}</span>
+			            	<span class="badge label-success">{{$modules->total()}}</span>
 			            </div>
 					</h2>
 				</header>
@@ -37,29 +37,29 @@
 								</tr>
 							</thead>
 							<tbody>
-		                    	@foreach ($posts as $post)
+		                    	@foreach ($modules as $module)
 			                        <tr style="font-size: 18px;">
-				                            <td>{{ $post->id }}</td>
-				                            <td>{{ substr($post->title,0,20) }}</td>
-				                            <td>{{ substr($post->subject,0,20) }}</td>
-				                            <td>{{ substr($post->body,0,40) }}{{ strlen($post->body) > 40 ? "..." : ""}}</td>
-				                            <td>{{ date('M j, Y H:i:s', strtotime($post->created_at)) }}</td>
+				                            <td>{{ $module->id }}</td>
+				                            <td>{{ substr($module->title,0,20) }}</td>
+				                            <td>{{ substr($module->subject,0,20) }}</td>
+				                            <td>{{ substr($module->body,0,40) }}{{ strlen($module->body) > 40 ? "..." : ""}}</td>
+				                            <td>{{ date('M j, Y H:i:s', strtotime($module->created_at)) }}</td>
 			                            <td class="actions">
-			                                <a href="{{ route($globalvar['routeshow'], $post->id)}}">
+			                                <a href="{{ route($globalvar['routeshow'], $module->id)}}">
 			                                    <button class="btn btn-md btn-primary">
 			                                        <i class="fa fa-eye" aria-hidden="true"></i>
 			                                        View
 			                                    </button>
 			                                </a>
-			                                <a href="{{ route($globalvar['routeedit'], $post->id) }}">
+			                                <a href="{{ route($globalvar['routeedit'], $module->id) }}">
 			                                    <button class="btn btn-md btn-warning">
 			                                        <i class="fa fa-pencil"></i>
 			                                        Edit
 			                                    </button>
 			                                </a>
-			                            @if($post->published == 0)
+			                            @if($module->published == 0)
 			                                
-			                                	<a onclick="return confirm('Are you sure you want to publish this notice {{$post->title }}?');" href="{{ route($globalvar['routepublish'], $post->id)}}">
+			                                	<a onclick="return confirm('Are you sure you want to publish this notice {{$module->title }}?');" href="{{ route($globalvar['routepublish'], $module->id)}}">
 												    <button class="btn btn-md btn-success">
 				                                        <i class="fa  fa-bolt"></i>
 				                                        Publish
@@ -67,7 +67,7 @@
 												</a>
 			                                
 			                            @else
-			                                <a onclick="return confirm('Are you sure you want to unpublish this notice {{$post->title }}?');" href="{{ route($globalvar['routeunpublish'], $post->id)}}">
+			                                <a onclick="return confirm('Are you sure you want to unpublish this notice {{$module->title }}?');" href="{{ route($globalvar['routeunpublish'], $module->id)}}">
 			                                    <button class="btn btn-md btn-warning">
 			                                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
 			                                        UnPublish
@@ -80,7 +80,7 @@
 							</tbody>
 						</table>
 						<div class="text-center">
-		                	{!! $posts->render() !!}
+		                	{!! $modules->render() !!}
 		                </div>
 					</div>
 				</div>

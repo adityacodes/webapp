@@ -317,7 +317,8 @@
 													 Modules
 												</a>
 											</li>
-											<li class="{{Request::is('gtpadmin/post') ? 'nav-active':''}}">
+											<li class="{{Request::is('gtpadmin/post') ||
+														Request::is('gtpadmin/post/*') ? 'nav-active':''}}">
 												
 												<a href="{{url('/gtpadmin/post')}}">
 													<i class="fa fa-list" aria-hidden="true"></i>
