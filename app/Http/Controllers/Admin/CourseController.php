@@ -10,179 +10,320 @@ use App\Course, Auth, Session, Validator, File;
 
 class CourseController extends Controller
 {
-    private $uploadPath = 'uploads/course';
+     private $globalvar = array(
+            'mainname' => 'Course',
+            'mainweb' => 'course',
+            'model' => 'App\Course',
+            'routeindex' => 'gtpadmin.course.index',
+            'routecreate' => 'gtpadmin.course.create',
+            'routedestroy' => 'gtpadmin.course.destroy',
+            'routeedit' => 'gtpadmin.course.edit',
+            'routepublish' => 'gtpadmin.course.publish',
+            'routeupdate' => 'gtpadmin.course.update',
+            'routeunpublish' => 'gtpadmin.course.unpublish',
+            'routestore' => 'gtpadmin.course.store',
+            'routeshow' => 'gtpadmin.course.show',
+            'viewindex' => 'admin.course.index',
+            'viewcreate' => 'admin.course.create',
+            'viewedit' => 'admin.course.edit',
+            'viewshow' => 'admin.course.show',
+            'urlcreate' => 'gtpadmin/course/create',
+            'creationsuccess' => 'course created successfully',
+            'updationsuccess' => 'course updated successfully',
+            'publishsuccess' => 'course pubslished successfully',
+            'unpublishsuccess' => 'course unpubslished successfully',
+            'deletionsuccess' => 'course deleted successfully',
+            'filenotvalidmessage' => 'Uploaded file is not valid',
+            'editpagetitle' => 'Edit course',
+            'indexpagetitle' => 'All courses',
+            'totalitems' => 'Total courses',
+            'coursesinindex' => 5,
+            'uploadpath' => 'uploads/course'
+    );
+
+
+    private $indexcolumns = array('#','Course Id','Name','Slug', 'Modules','Created At','Actions');
+
+    private $validatewithslug = array(
+            'course_id' => 'required|max:255',
+            'name' => 'required',
+            'slug'  => 'required|alpha_dash|min:5|max:255|unique:courses,slug',
+            'image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        );
+
+    /*
+     * database name of publish property or column.
+     */
+    private $resourcepublish = 'published';
+
+    /*
+     * database name of image property or column.
+     */
+    private $imageresource = 'image';
+
+
+
+    /*
+     * database name of slug property or column.
+     */
+    private $slugresource = 'slug';
+
+    
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        $courses = Course::orderBy('id', 'desc')->paginate(5);
-        return view('admin.course.index')->withCourses($courses);
+        $courses = $this->globalvar['model']::orderBy('id', 'desc')->paginate( $this->globalvar['coursesinindex']);
+        return view($this->globalvar['viewindex'])
+                      ->with('courses' , $courses)
+                      ->with('globalvar', $this->globalvar)
+                      ->with('indexcolumns', $this->indexcolumns);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-        return view('admin.course.create');
+        $formfields = array(array(
+                        'label' => 'Course ID',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'course_id',
+                        'value' => 'CI'.time(),
+                        'name' => 'course_id',
+                        'options' => array(
+                            'value' => 'CI'.time(),
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter course slug here.'
+                          )
+                        ),
+                        array(
+                        'label' => 'Course Name',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'name',
+                        'value' => '',
+                        'name' => 'name',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter course name here.'
+                          )
+                        ),
+                        array(
+                        'label' => 'Slug',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'slug',
+                        'value' => '',
+                        'name' => 'slug',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter course slug here.'
+                          )
+                        ),
+                      array(
+                        'label' => 'Course Image',
+                        'icon' => 'fa-user',
+                        'type' => 'file',
+                        'id' => 'image',
+                        'name' => 'image',
+                        'value' => '',
+                        'placeholder' => '',
+                        )
+                    );
+
+        return view($this->globalvar['viewcreate'])
+                      ->with('globalvar', $this->globalvar)
+                      ->with('formfields', $formfields);
     }
 
-    /**
+    /**\
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
         //1. validate the date
-         $validator = Validator::make($request->all(), array(
-                'title' => 'required|max:255',
-                'slug'  => 'required|alpha_dash|min:5|max:255|unique:courses,slug',
-                'course_image'=> 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'body' => 'required',
-            ));
+         $validator = Validator::make($request->all(), $this->validatewithslug);
 
           if ($validator->fails()) {
-            // send back to the page with the input data and errors
-            return redirect('gtpadmin/course/create')
+            return redirect($this->globalvar['urlcreate'])
                         ->withErrors($validator)
                         ->withInput();
           }
 
-            if ($request->file('course_image')->isValid()) {
-                $imageName = time().'.'.$request->file('course_image')->getClientOriginalExtension();
-                $request->file('course_image')->move($this->uploadPath, $imageName);
-            }
-            else {
-              // sending back with error message.
-              Session::flash('warning', 'Uploaded file is not valid');
-              return redirect('gtpadmin/course/create')
-                            ->withErrors($validator)
-                            ->withInput();
-            }
+          $resourceimage = $this->imageresource;
+          $courseer = '';
+          $imageName = $this->checkimageandsave($request, $courseer ,$resourceimage);
 
         //2. Store in the DB
-        $course = new Course;
-        $course->image = $imageName;
-        $course->title = $request->title;
-        $course->slug = $request->slug;
-        $course->body = $request->body;
+        $course = new $this->globalvar['model'];
+
+        foreach ($this->validatewithslug as $validkey => $value) 
+        {
+            if($validkey==$this->imageresource){
+                $course->$validkey = $imageName;
+            }
+            else{
+              $course->$validkey = $request->$validkey;
+            }
+
+        }
 
         $course->save();
 
-        //3. Redirect to another page
-        Session::flash('success', 'The course was successfully saved.');
+        Session::flash('success', $this->globalvar['creationsuccess']);
+        return redirect()->route($this->globalvar['routeshow'], $course->id);
 
-        return redirect()->route('gtpadmin.course.show', $course->id);
+
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
-        $course = Course::find($id);
-        return view('admin.course.show')->withCourse($course);
+        $course = $this->globalvar['model']::find($id);
+        return view($this->globalvar['viewshow'])->with('course',$course)->with('globalvar', $this->globalvar);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
-         //find the course in the db ans save as a var
-        $course = Course::find($id);
+        //find the course in the db ans save as a var
+        $course = $this->globalvar['model']::find($id);
         //return the view and pass in the var we previously created
-        return view('admin.course.edit')->withCourse($course);
+        return view($this->globalvar['viewedit'])->with('course',$course)->with('globalvar', $this->globalvar);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        $course = Course::find($id);
+        //validate data
+        $course = $this->globalvar['model']::find($id);
 
-        if ($request->input('slug') == $course->slug ) {
-            $this->validate($request, array(
-                'title' => 'required|max:255',
-                'body' => 'required',
-                'course_image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ));
+        $validationrules = $this->validatewithslug;
+
+        $slugname = $this->slugresource; //Name in databse
+
+        if ($request->input($slugname) == $course->$slugname ) {
+            unset($validationrules[$slugname]);
+            $this->validate($request, $validationrules);
         }
 
         else{
-            $this->validate($request, array(
-                'title' => 'required|max:255',
-                'slug'  => 'required|alpha_dash|min:5|max:255|unique:courses,slug',
-                'course_image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'body' => 'required',
-            ));
+            $this->validate($request, $validationrules);
         }
-        
-        if($request->hasfile('course_image'))
-        {
-            if($request->file('course_image')->isValid())
-            {
-                File::delete($this->uploadPath.'/'.$course->image);
-                $imageName = time().'.'.$request->file('course_image')->getClientOriginalExtension();
-                $request->file('course_image')->move($this->uploadPath, $imageName);
-                
-            }
-            else{     
-              // sending back with error message.
-              Session::flash('warning', 'Uploaded file is not valid');
-              return back()->withErrors($validator)
-                            ->withInput();
-            }
 
-        }
+        $resourceimage = $this->imageresource;
+        $imageName = $this->checkimageandsave($request, $course ,$resourceimage);
+        
+        
 
         //save the data
-        $course->title = $request->title;
-        $course->slug = $request->slug;
-        $course->image = $imageName;
-        $course->body = $request->body;
+        foreach ($validationrules as $validkey => $value) 
+        {
+            if($validkey==$this->imageresource){
+              if(!empty($imageName))
+                $course->$validkey = $imageName;
+            }
+            else{
+              $course->$validkey = $request->$validkey;
+            }
+
+        }
 
         $course->save();
-        // set flash meessage to be shown
 
-        Session::flash('success', 'The course was successfully updated');
-        //redirect the users
+        Session::flash('success', $this->globalvar['updationsuccess']);
 
-        return redirect()->route('gtpadmin.course.show', $course->id);
+        return redirect()->route($this->globalvar['routeshow'], $course->id);
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
-        $course = Course::find($id);
-        File::delete($this->uploadPath.'/'.$course->image);
+
+        $course = $this->globalvar['model']::find($id);
+        $resourceimage = $this->imageresource;
+        File::delete($this->globalvar['uploadpath'].'/'.$course->$resourceimage);
         $course->delete();
 
-        Session::flash('Success', 'course Deleted Successfully');
+        Session::flash('Success', $this->globalvar['deletionsuccess']);
+        return redirect()->route($this->globalvar['routeindex']);
+    }
 
-        return redirect()->route('gtpadmin.course.index');
+
+    public function publish($id)
+    {
+        $course = $this->globalvar['model']::find($id);
+        $publishresource = $this->resourcepublish;
+        $course->$publishresource = 1;
+        $course->save();
+
+        Session::flash('Success', $this->globalvar['publishsuccess']);
+        return redirect()->route($this->globalvar['routeindex']);
+    }
+
+    public function unpublish($id)
+    {
+        $course = $this->globalvar['model']::find($id);
+        $publishresource = $this->resourcepublish;
+        $course->$publishresource = 0;
+        $course->save();
+
+        Session::flash('Success', $this->globalvar['unpublishsuccess']);
+        return redirect()->route($this->globalvar['routeindex']);
+    }
+
+
+    public function checkimageandsave(Request $request, $course,$resourceimage)
+    {
+        if($request->hasfile($resourceimage))
+        {
+            if($request->file($resourceimage)->isValid())
+            {
+                if(!empty($course))
+                    File::delete($this->globalvar['uploadpath'].'/'.$course->image);
+                $imageName = time().'.'.$request->file($resourceimage)->getClientOriginalExtension();
+                $request->file($resourceimage)->move($this->globalvar['uploadpath'], $imageName);
+
+                return $imageName;
+                
+            }
+            else{     
+              // sending back with error message.
+              Session::flash('warning', $this->globalvar['filenotvalidmessage']);
+              return back()->withErrors($validator)
+                            ->withInput();
+            }
+
+        }
     }
 }

@@ -1,8 +1,8 @@
 @extends('admin.layouts.apanel')
 
-@section('title',' Create New Module')
+@section('title',' Create New course')
 
-@section('header',' Create New Module')
+@section('header',' Create New course')
 
 @section('content')
     <div class="row">

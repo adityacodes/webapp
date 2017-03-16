@@ -16,6 +16,7 @@ class CreateModulesTable extends Migration
             $table->increments('id');
             $table->string('module_id');
             $table->string('name');
+            $table->string('image');
             $table->integer('course_id');
             $table->timestamps();
         });

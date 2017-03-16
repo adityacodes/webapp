@@ -139,5 +139,23 @@ Route::group(['namespace' => 'Admin',
 		'uses'=>'PostController@unpublish'
 	]);
 
+	Route::get('/course/publish/{id}',[
+		'as'=>'gtpadmin.course.publish',
+		'uses'=>'CourseController@publish'
+	]);
+	Route::get('/course/unpublish/{id}',[
+		'as'=>'gtpadmin.course.unpublish',
+		'uses'=>'CourseController@unpublish'
+	]);
+
+	Route::get('/module/publish/{id}',[
+		'as'=>'gtpadmin.module.publish',
+		'uses'=>'ModuleController@publish'
+	]);
+	Route::get('/module/unpublish/{id}',[
+		'as'=>'gtpadmin.module.unpublish',
+		'uses'=>'ModuleController@unpublish'
+	]);
+
 
 });

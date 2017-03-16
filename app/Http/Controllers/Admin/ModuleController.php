@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Module, Validator, Session;
+use App\Module, Validator, Session, App\Course;
 
 class ModuleController extends Controller
 {
-    public $globalvar = array(
+    private $globalvar = array(
             'mainname' => 'Module',
             'mainweb' => 'module',
             'model' => 'App\Module',
@@ -41,6 +41,7 @@ class ModuleController extends Controller
             'uploadpath' => 'uploads/module',
             'type' => 'text'
     );
+
 
     private $indexcolumns = array('#','Title','Question','Answer', 'Created At','Actions');
 
@@ -91,7 +92,59 @@ class ModuleController extends Controller
      */
     public function create()
     {
-        return view($this->globalvar['viewcreate'])->with('globalvar', $this->globalvar);
+        $coursesavailable = Course::all();
+        $formfields = array(array(
+                        'label' => 'Module ID',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'module_id',
+                        'value' => 'MD'.time(),
+                        'name' => 'module_id',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter module slug here.',
+                            'disabled' => true
+                          )
+                        ),
+                        array(
+                        'label' => 'Module Name',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'name',
+                        'value' => '',
+                        'name' => 'name',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter module name here.'
+                          )
+                        ),
+                      array(
+                        'label' => 'Module Image',
+                        'icon' => 'fa-user',
+                        'type' => 'file',
+                        'id' => 'image',
+                        'name' => 'image',
+                        'value' => '',
+                        'placeholder' => '',
+                        ),
+                      array(
+                        'label' => 'Course ID',
+                        'icon' => 'fa-user',
+                        'type' => 'select',
+                        'id' => 'course_id',
+                        'name' => 'course_id',
+                        'coptions' => array('L' => 'Large', 'S' => 'Small'),
+                        'value' => 'S',
+                        'options' => array(
+                            'class' => 'form-control mb-md',
+                            'placeholder' => 'Hello this is a textarea'
+                          )
+                        )
+                    );
+
+        return view($this->globalvar['viewcreate'])
+                      ->with('globalvar', $this->globalvar)
+                      ->with('formfields', $formfields);
     }
 
     /**\
