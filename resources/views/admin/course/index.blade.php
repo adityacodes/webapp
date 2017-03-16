@@ -1,8 +1,8 @@
 @extends('admin.layouts.apanel')
 
-@section('title',' All courses')
+@section('title',' All Courses')
 
-@section('header',' All courses')
+@section('header',' All Courses')
 
 @section('content')
 
@@ -40,9 +40,10 @@
 		                    	@foreach ($courses as $course)
 			                        <tr style="font-size: 18px;">
 				                            <td>{{ $course->id }}</td>
-				                            <td>{{ substr($course->title,0,20) }}</td>
-				                            <td>{{ substr($course->subject,0,20) }}</td>
-				                            <td>{{ substr($course->body,0,40) }}{{ strlen($course->body) > 40 ? "..." : ""}}</td>
+				                            <td>{{ $course->course_id }}</td>
+				                            <td>{{ $course->name }}</td>
+				                            <td>{{ $course->slug }}</td>
+				                            <td>{{ $course->modules }}</td>
 				                            <td>{{ date('M j, Y H:i:s', strtotime($course->created_at)) }}</td>
 			                            <td class="actions">
 			                                <a href="{{ route($globalvar['routeshow'], $course->id)}}">

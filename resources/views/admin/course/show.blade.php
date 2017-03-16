@@ -8,7 +8,7 @@
 
 @section('header')
 
-{{$globalvar['mainname']}}
+{{$globalvar['mainname'].' - '.$course->id}}
 
 @endsection
 
@@ -25,7 +25,7 @@
 							<a href="#" class="fa fa-times"></a>
 						</div>
 	
-						<h2 class="panel-title">{{$globalvar['mainname']}}</h2>
+						<h2 class="panel-title">{{$globalvar['mainname'].' - '.$course->id}}</h2>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -33,19 +33,28 @@
 	                        <h4 >
 						    	<table class="table table-hover table-bordered" >
 	                                <tbody>
-	                                	
-	                                	@foreach($coursename as $coursekey => $courseval)
-		                                    <tr>
-		                                        <td>1</td>
-		                                        <td>{{$coursekey}}</td>
-		                                        <td>
-		                                        	{{$courseval}}
-		                                        </td>
-		                                    </tr>
+	                                	<?php $i=1; ?>
+	                                	@foreach($dbresources as $resource => $value)
 
-	                                    @endforeach
-	                                    
-	                                    
+	                                		@if($resource != 'image')
+			                                    <tr>
+			                                        <td>{{$i}}</td>
+			                                        <td>{{$value}}</td>
+			                                        <td>
+			                                        	{{ $course->$resource}}
+			                                        </td>
+			                                    </tr>
+			                                @else
+			                                	<tr>
+			                                        <td>{{$i}}</td>
+			                                        <td>{{$value}}</td>
+			                                        <td>
+			                                        	<img width="150" height="100" src="{{ url('/uploads/course') }}/{{$course->image}}">
+			                                        </td>
+			                                    </tr>
+			                                @endif
+			                                <?php $i++; ?>
+	                                   	@endforeach
 	                                </tbody>
 	                             </table>
 						    </h4>                    

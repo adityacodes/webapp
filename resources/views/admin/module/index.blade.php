@@ -40,9 +40,9 @@
 		                    	@foreach ($modules as $module)
 			                        <tr style="font-size: 18px;">
 				                            <td>{{ $module->id }}</td>
-				                            <td>{{ substr($module->title,0,20) }}</td>
-				                            <td>{{ substr($module->subject,0,20) }}</td>
-				                            <td>{{ substr($module->body,0,40) }}{{ strlen($module->body) > 40 ? "..." : ""}}</td>
+				                            <td>{{ $module->module_id }}</td>
+				                            <td>{{ $module->name }}</td>
+				                            <td>{{ $module->course_id }}</td>
 				                            <td>{{ date('M j, Y H:i:s', strtotime($module->created_at)) }}</td>
 			                            <td class="actions">
 			                                <a href="{{ route($globalvar['routeshow'], $module->id)}}">

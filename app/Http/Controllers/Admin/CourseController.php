@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Course, Auth, Session, Validator, File;
+use App\Module;
 
 class CourseController extends Controller
 {
@@ -34,11 +35,13 @@ class CourseController extends Controller
             'unpublishsuccess' => 'course unpubslished successfully',
             'deletionsuccess' => 'course deleted successfully',
             'filenotvalidmessage' => 'Uploaded file is not valid',
-            'editpagetitle' => 'Edit course',
+            'createpagetitle' => 'Create Course',
+            'editpagetitle' => 'Edit Course',
             'indexpagetitle' => 'All courses',
             'totalitems' => 'Total courses',
             'coursesinindex' => 5,
-            'uploadpath' => 'uploads/course'
+            'uploadpath' => 'uploads/course',
+            'warningdel' => 'The course folder isnot empty.'
     );
 
 
@@ -50,6 +53,8 @@ class CourseController extends Controller
             'slug'  => 'required|alpha_dash|min:5|max:255|unique:courses,slug',
             'image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         );
+
+    private $dbresource = array('id' => 'ID', 'course_id' => 'Course ID', 'name' => 'Course Name', 'slug' => 'Slug' , 'modules' => 'No. Of Modules', 'image' => 'Course Image');
 
     /*
      * database name of publish property or column.
@@ -194,7 +199,10 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = $this->globalvar['model']::find($id);
-        return view($this->globalvar['viewshow'])->with('course',$course)->with('globalvar', $this->globalvar);
+        return view($this->globalvar['viewshow'])
+                        ->with('course',$course)
+                        ->with('globalvar', $this->globalvar)
+                        ->with('dbresources', $this->dbresource);;
     }
 
     /**
@@ -205,10 +213,60 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        //find the course in the db ans save as a var
+
         $course = $this->globalvar['model']::find($id);
+
+        $formfields = array(array(
+                        'label' => 'Course ID',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'course_id',
+                        'value' => $course->course_id,
+                        'name' => 'course_id',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter course slug here.'
+                          )
+                        ),
+                        array(
+                        'label' => 'Course Name',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'name',
+                        'value' => $course->name,
+                        'name' => 'name',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter course name here.'
+                          )
+                        ),
+                        array(
+                        'label' => 'Slug',
+                        'icon' => 'fa-user',
+                        'type' => 'text',
+                        'id' => 'slug',
+                        'value' => $course->slug,
+                        'name' => 'slug',
+                        'options' => array(
+                            'class' => 'form-control border-input',
+                            'placeholder' => 'Enter course slug here.'
+                          )
+                        ),
+                      array(
+                        'label' => 'Course Image',
+                        'icon' => 'fa-user',
+                        'type' => 'file',
+                        'id' => 'image',
+                        'name' => 'image',
+                        'value' => $course->image,
+                        'placeholder' => '',
+                        )
+                    );
         //return the view and pass in the var we previously created
-        return view($this->globalvar['viewedit'])->with('course',$course)->with('globalvar', $this->globalvar);
+        return view($this->globalvar['viewedit'])
+                    ->with('course',$course)
+                    ->with('globalvar', $this->globalvar)
+                    ->with('formfields', $formfields);
     }
 
     /**
@@ -271,8 +329,13 @@ class CourseController extends Controller
     {
 
         $course = $this->globalvar['model']::find($id);
+        if($course->modules>0){
+          Session::flash('warning', $this->globalvar['warningdel']);
+          return redirect()->route($this->globalvar['routeindex']);
+        }
         $resourceimage = $this->imageresource;
         File::delete($this->globalvar['uploadpath'].'/'.$course->$resourceimage);
+           
         $course->delete();
 
         Session::flash('Success', $this->globalvar['deletionsuccess']);

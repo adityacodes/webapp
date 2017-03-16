@@ -190,7 +190,8 @@
 											<span>Main</span>
 										</a>
 										<ul class="nav nav-children">
-											<li class="{{Request::is('gtpadmin/course') ? 'nav-active':''}}">
+											<li class="{{Request::is('gtpadmin/course') ||
+											Request::is('gtpadmin/course/*') ? 'nav-active':''}}">
 												<a href="{{url('/gtpadmin/course')}}">
 													 <i class="fa fa-cubes" aria-hidden="true"></i>
 													 Courses

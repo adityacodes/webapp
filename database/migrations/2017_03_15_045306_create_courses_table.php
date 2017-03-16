@@ -20,6 +20,7 @@ class CreateCoursesTable extends Migration
             $table->string('modules')->default(0);
             $table->string('image');
             $table->boolean('published')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

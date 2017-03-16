@@ -1,15 +1,24 @@
 @extends('admin.layouts.apanel')
 
-@section('title',' Create New course')
+@section('title',' Create New Course')
 
-@section('header',' Create New course')
+@section('header',' Create New Course')
 
 @section('content')
     <div class="row">
-    	<div class="card">
-                 
-                <div class="content">
-                <h4>
+                 <section class="panel">
+					<header class="panel-heading">
+					<div class="panel-actions">
+						<a href="#" class="fa fa-caret-down"></a>
+						<a href="#" class="fa fa-times"></a>
+					</div>
+					<h2 class="panel-title">
+						{{$globalvar['createpagetitle']}}
+					</h2>
+
+					</header>
+					<div class="panel-body">
+                	<h4>
 			    	{!! Form::open(array('route' => $globalvar['routestore'], 'class' => 'form-horizontal form-bordered', 'data-parsley-validate' => '', 'enctype' => 'multipart/form-data', 'autocomplete' => 'off')) !!}
 
 			    			@foreach($formfields as $formfield)
@@ -94,10 +103,10 @@
 				                </div>
 					{!! Form::close() !!}
 					</h4>
-		    	</div>                     
+					</div>
+
+				</section>                     
 		    
-		    <div class="footer"></div>
-        </div>
 	</div>
 
 
