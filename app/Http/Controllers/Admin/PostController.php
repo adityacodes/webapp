@@ -13,6 +13,36 @@ class PostController extends Controller {
 
     private $uploadPath = 'uploads/post';
 
+    public $globalvar = array(
+            'model' => 'App\Post',
+            'routeindex' => 'gtpadmin.post.index',
+            'routecreate' => 'gtpadmin.post.create',
+            'routedestroy' => 'gtpadmin.post.destroy',
+            'routeedit' => 'gtpadmin.post.edit',
+            'routeupdate' => 'gtpadmin.post.update',
+            'routeunpublish' => 'gtpadmin.post.unpublish',
+            'routestore' => 'gtpadmin.post.store',
+            'routeshow' => 'gtpadmin.post.show',
+            'viewindex' => 'admin.post.index',
+            'viewcreate' => 'admin.post.create',
+            'viewedit' => 'admin.post.edit',
+            'viewshow' => 'admin.post.show',
+            'urlcreate' => 'gtpadmin/post/create',
+            'creationsuccess' => 'Post created successfully',
+            'updationsuccess' => 'Post updated successfully',
+            'publishsuccess' => 'Post pubslished successfully',
+            'deletionsuccess' => 'Post deleted successfully',
+            'filenotvalidmessage' => 'Uploaded file is not valid'
+    );
+
+    private $validatewithslug = array(
+            'title' => 'required|max:255',
+            'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
+            'post_image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'subject' => 'required',
+            'body' => 'required',
+        );
+
     /**
      * Display a listing of the resource.
      *
@@ -20,11 +50,8 @@ class PostController extends Controller {
      */
     public function index()
     {
-        //create a variable and store all the blog posts in it
-        $posts = Post::orderBy('id', 'desc')->paginate(5);
-
-        //return a view and pass in the above variabe
-        return view('admin.post.index')->withPosts($posts);
+        $posts = $this->globalvar['model']::orderBy('id', 'desc')->paginate(5);
+        return view($this->globalvar['viewindex'])->withPosts($posts)->with('globalvar', $this->globalvar);
     }
 
     /**
@@ -34,7 +61,7 @@ class PostController extends Controller {
      */
     public function create()
     {
-        return view('admin.post.create');
+        return view($this->globalvar['viewcreate'])->with('globalvar', $this->globalvar);
     }
 
     /**\
@@ -45,45 +72,30 @@ class PostController extends Controller {
     public function store(Request $request)
     {
         //1. validate the date
-         $validator = Validator::make($request->all(), array(
-                'title' => 'required|max:255',
-                'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
-                'post_image'=> 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'body' => 'required',
-            ));
+         $validator = Validator::make($request->all(), $this->validatewithslug);
 
           if ($validator->fails()) {
-            // send back to the page with the input data and errors
-            return redirect('gtpadmin/post/create')
+            return redirect($this->globalvar['urlcreate'])
                         ->withErrors($validator)
                         ->withInput();
           }
 
-            if ($request->file('post_image')->isValid()) {
-                $imageName = time().'.'.$request->file('post_image')->getClientOriginalExtension();
-                $request->file('post_image')->move($this->uploadPath, $imageName);
-            }
-            else {
-              // sending back with error message.
-              Session::flash('warning', 'Uploaded file is not valid');
-              return redirect('gtpadmin/post/create')
-                            ->withErrors($validator)
-                            ->withInput();
-            }
+          $resourceimage = 'post_image';
+          $post = '';
+          $imageName = $this->checkimageandsave($request, $post ,$resourceimage);
 
         //2. Store in the DB
-        $post = new Post;
+        $post = new $this->globalvar['model'];
         $post->image = $imageName;
+        $post->subject = $request->subject;
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->body = $request->body;
 
         $post->save();
 
-        //3. Redirect to another page
-        Session::flash('success', 'The post was successfully saved.');
-
-        return redirect()->route('gtpadmin.post.show', $post->id);
+        Session::flash('success', $this->globalvar['creationsuccess']);
+        return redirect()->route($this->globalvar['routeshow'], $post->id);
 
 
     }
@@ -96,8 +108,8 @@ class PostController extends Controller {
      */
     public function show($id)
     {
-        $post = Post::find($id);
-        return view('admin.post.show')->withPost($post);
+        $post = $this->globalvar['model']::find($id);
+        return view($this->globalvar['viewshow'])->withPost($post);
     }
 
     /**
@@ -109,9 +121,9 @@ class PostController extends Controller {
     public function edit($id)
     {
         //find the post in the db ans save as a var
-        $post = Post::find($id);
+        $post = $this->globalvar['model']::find($id);
         //return the view and pass in the var we previously created
-        return view('admin.post.edit')->withPost($post);
+        return view($this->globalvar['viewedit'])->withPost($post)->with('globalvar', $this->globalvar);
     }
 
     /**
@@ -123,56 +135,37 @@ class PostController extends Controller {
     public function update(Request $request,$id)
     {
         //validate data
-        $post = Post::find($id);
+        $post = $this->globalvar['model']::find($id);
+
+        $validationrules = $this->validatewithslug;
+        
 
         if ($request->input('slug') == $post->slug ) {
-            $this->validate($request, array(
-                'title' => 'required|max:255',
-                'body' => 'required',
-                'post_image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ));
+            unset($validationrules['slug']);
+            $this->validate($request, $validationrules);
         }
 
         else{
-            $this->validate($request, array(
-                'title' => 'required|max:255',
-                'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
-                'post_image'=> 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'body' => 'required',
-            ));
+            $this->validate($request, $validationrules);
         }
-        
-        if($request->hasfile('post_image'))
-        {
-            if($request->file('post_image')->isValid())
-            {
-                File::delete($this->uploadPath.'/'.$post->image);
-                $imageName = time().'.'.$request->file('post_image')->getClientOriginalExtension();
-                $request->file('post_image')->move($this->uploadPath, $imageName);
-                
-            }
-            else{     
-              // sending back with error message.
-              Session::flash('warning', 'Uploaded file is not valid');
-              return back()->withErrors($validator)
-                            ->withInput();
-            }
 
-        }
+        $resourceimage = 'post_image';
+        $imageName = $this->checkimageandsave($request, $post ,$resourceimage);
+        
+        
 
         //save the data
         $post->title = $request->title;
         $post->slug = $request->slug;
-        $post->image = $imageName;
+        if(!empty($imageName))
+            $post->image = $imageName;
         $post->body = $request->body;
 
         $post->save();
-        // set flash meessage to be shown
 
-        Session::flash('success', 'The post was successfully updated');
-        //redirect the users
+        Session::flash('success', $this->globalvar['updationsuccess']);
 
-        return redirect()->route('gtpadmin.post.show', $post->id);
+        return redirect()->route($this->globalvar['routeshow'], $post->id);
 
     }
 
@@ -184,15 +177,49 @@ class PostController extends Controller {
      */
     public function destroy($id)
     {
-        //Check if post is present in applied field
 
-        $post = Post::find($id);
+        $post = $this->globalvar['model']::find($id);
         File::delete($this->uploadPath.'/'.$post->image);
         $post->delete();
 
-        Session::flash('Success', 'Post Deleted Successfully');
+        Session::flash('Success', $this->globalvar['deletionsuccess']);
+        return redirect()->route($this->globalvar['routeindex']);
+    }
 
-        return redirect()->route('gtpadmin.post.index');
+
+    public function publish($id)
+    {
+        $post = $this->globalvar['model']::find($id);
+        $post->publish = 1;
+        $post->save();
+
+        Session::flash('Success', $this->globalvar['publishsuccess']);
+        return redirect()->route($this->globalvar['routeindex']);
+    }
+
+
+    public function checkimageandsave(Request $request, $post,$resourceimage)
+    {
+        if($request->hasfile($resourceimage))
+        {
+            if($request->file($resourceimage)->isValid())
+            {
+                if(!empty($post))
+                    File::delete($this->uploadPath.'/'.$post->image);
+                $imageName = time().'.'.$request->file($resourceimage)->getClientOriginalExtension();
+                $request->file($resourceimage)->move($this->uploadPath, $imageName);
+
+                return $imageName;
+                
+            }
+            else{     
+              // sending back with error message.
+              Session::flash('warning', $this->globalvar['filenotvalidmessage']);
+              return back()->withErrors($validator)
+                            ->withInput();
+            }
+
+        }
     }
 
     

@@ -127,5 +127,13 @@ Route::group(['namespace' => 'Admin',
 
 	Route::resource('/post', 'PostController');
 	Route::resource('/notification', 'NotificationController');
+	Route::resource('/module', 'ModuleController');
+	Route::resource('/course', 'CourseController');
+
+	Route::get('/notice/publish/{id}',[
+		'as'=>'gtpadmin.notice.publish',
+		'uses'=>'AdminController@publish'
+	]);
+
 
 });

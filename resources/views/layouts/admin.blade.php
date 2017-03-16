@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="{{asset('assets/vendor/font-awesome/css/font-awesome.css')}}" />
 		<link rel="stylesheet" href="{{asset('assets/vendor/magnific-popup/magnific-popup.css')}}" />
 		<link rel="stylesheet" href="{{asset('assets/vendor/bootstrap-datepicker/css/datepicker3.css')}}" />
-
+		
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="{{asset('assets/stylesheets/theme.css')}}" />
 
@@ -50,7 +50,6 @@
 		<script src="{{asset('assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
 		<script src="{{asset('assets/vendor/magnific-popup/magnific-popup.js')}}"></script>
 		<script src="{{asset('assets/vendor/jquery-placeholder/jquery.placeholder.js')}}"></script>
-		
 		<!-- Theme Base, Components and Settings -->
 		<script src="{{asset('assets/javascripts/theme.js')}}"></script>
 		
