@@ -8,14 +8,16 @@
     <meta name="keywords" content="Exam system|exam|exams">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>@yield('title') | GTP TUTORIALS</title>
     <!-- Bootstrap Core CSS --> 
-    <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+   <!-- <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet"> -->
     <link rel="stylesheet" href="{{asset('user/css/bootstrap-datepicker.min.css')}}">
     <link href="{{asset('user/css/sweetalert.css')}}" rel="stylesheet" type="text/css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="{{asset('user/css/morris.css')}}" rel="stylesheet">
     <link href="{{asset('user/css/sb-admin.css')}}" rel="stylesheet">
+    <link href="{{asset('user/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('user/css/custom-fonts.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('user/css/materialdesignicons.css')}}" rel="stylesheet" type="text/css">
 
@@ -31,7 +33,7 @@
 </head>
 
 
-<body class="login-screen ng-scope" background="{{asset('img/lg-bg.jpg')}}" ng-app="academia" cz-shortcut-listen="true">
+<body><!--class="login-screen ng-scope" background="{{asset('img/lg-bg.jpg')}}" ng-app="academia" cz-shortcut-listen="true"-->
 
  @yield('content')
 
@@ -47,6 +49,7 @@
     <script src="{{asset('user/js/alertify.js')}}"></script> 
     <script src="{{asset('user/js/angular.js')}}"></script>
     <script src="{{asset('user/js/angular-messages.js')}}"></script>
+
     @yield('scripts')
 
     </body>
