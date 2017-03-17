@@ -150,6 +150,14 @@
 											 <span>Post</span>
 										</a>
 									</li>
+									<li class="{{Request::is('gtpadmin/exam') ||
+												Request::is('gtpadmin/exam/*') ? 'nav-active':''}}">
+										
+										<a href="{{url('/gtpadmin/exam')}}">
+											<i class="fa fa-pencil" aria-hidden="true"></i>
+											 <span>Exam</span>
+										</a>
+									</li>
 									<li class="{{Request::is('gtpadmin/trash') ||
 												Request::is('gtpadmin/trash/*') ? 'nav-active':''}}">
 										

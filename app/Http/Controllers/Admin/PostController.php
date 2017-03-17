@@ -44,7 +44,7 @@ class PostController extends Controller {
             'uploadpath' => 'uploads/post'
     );
 
-    private $indexcolumns = array('#','Title','Question','Answer', 'Created At','Actions');
+    private $indexcolumns = array('#','Title','Question','Answer', 'Module', 'Course','Created At','Actions');
 
     
 
@@ -79,6 +79,11 @@ class PostController extends Controller {
     public function index()
     {
         $posts = $this->globalvar['model']::orderBy('id', 'desc')->paginate( $this->globalvar['postsinindex']);
+        foreach($posts as &$post)
+        {
+            $post->module_id = Module::find($post->module_id)->value('name');
+            $post->course_id = Course::find($post->course_id)->value('name');
+        }
         return view($this->globalvar['viewindex'])
                       ->withPosts($posts)
                       ->with('globalvar', $this->globalvar)

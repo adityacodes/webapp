@@ -3,6 +3,7 @@
 @section('title', 'USER LOGIN')
 
 @section('content')
+<body class="login-screen ng-scope" background="{{asset('img/lg-bg.jpg')}}" ng-app="academia" cz-shortcut-listen="true">
     <div class="login-content">
         <div class="logo text-center"><img src="{{asset('img/gtp.png')}}" alt="" height="150" width="211">
         <div class="text-center"><h2>Global Tech Promoters</h2></div>
@@ -125,7 +126,6 @@
             </form>
         </div>
     </div>
-
 
 
 @endsection

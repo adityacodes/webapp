@@ -1,203 +1,136 @@
 @extends('layouts.auth')
 
+@section('title', 'Home')
 
 @section('stylesheets')
-    <link rel="stylesheet" href="{{asset('lpage/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('lpage/css/bootstrap-responsive.min.css')}}">
-    <link rel="stylesheet" href="{{asset('lpage/css/nivo-slider.css')}}">
-    <link rel="stylesheet" href="{{asset('lpage/css/prettyPhoto.css')}}">
-    <link rel="stylesheet" href="{{asset('lpage/css/flexslider.css')}}">
-    <link rel="stylesheet" href="{{asset('lpage/css/layout.css')}}">
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
-    
-    <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js')}}"></script>
-    <![endif]-->
-    
-    <noscript><link rel="stylesheet" href="{{asset('lpage/css/no-js.css')}}"></noscript>
-    
-    <!-- Favicons -->
-    <link rel="shortcut icon" href="{{asset('lpage/images/favicon.ico')}}">
-    <link rel="apple-touch-icon" href="{{asset('lpage/images/apple-touch-icon.png')}}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{asset('lpage/images/apple-touch-icon-72x72.png')}}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{asset('lpage/images/apple-touch-icon-114x114.png')}}">
-@endsection
 
+  <link href="{{asset('user/css/owl.carousel.min.css')}}" rel="stylesheet">
+  <link href="{{asset('user/css/owl.theme.default.css')}}" rel="stylesheet">
+
+  <style type="text/css">
+    .item{
+      border: 4px solid black; border-radius: 10px;
+
+    }
+  </style>
+@endsection
 
 @section('content')
 
-<div id="header">
-  <div class="container">
-   
-    <div class="logo text-center"><img src="{{asset('gtp.jpg')}}" alt="" height="250" width="151">
-        <div class="header"><h1>Global Tech Promoters</h1></div>
-        </div> <!-- Logo  URL -->
-   
-   
-   <p></p>
-  </div> <!-- End container -->
- </div> <!-- End header -->
- 
- <div id="top">
-  <div class="container">
-   <div class="row">
-   
-    <div class="slider span8">
-     <div class="nivoSlider">
-      <img src="{{asset('lpage/images/slider/1.jpg')}}" alt="Image" class="screenshoot-primary">
-      <img src="{{asset('lpage/images/slider/2.jpg')}}" alt="Image">
-      <img src="{{asset('lpage/images/slider/3.jpg')}}" alt="Image">
-      <img src="{{asset('lpage/images/slider/4.jpg')}}" alt="Image">
-     </div>
-    </div> <!-- End slider -->
-  
-    <div class="span4 text">
-     <h4>Log In!</h4>
-     <p></p>
-     <form id="register-form" method="post">
-      <input type="text" name="Username" placeholder="Username*" />
-      <input type="text" name="Password" placeholder="Password" />
-      <input type="submit" name="submit" value="Login" class="btn"  style="margin-bottom: 8px" />
-      <input type="submit" name="submit" value="Sign Up" class="btn" />
+<body class="login-screen" background="{{asset('img/base-top.jpg')}}">
 
-     </form>
-    </div> <!-- End text -->
-   
-   </div> <!-- End row -->
-  </div> <!-- End container -->
- </div> <!-- End top -->
- 
- <div id="main">
-  <div class="container">
-  
-   <div class="features">
-    <div class="header">
-     <h2>Our Best Features</h2>
-     <p></p>
-    </div>
-    
-    <div class="row">
-     <div class="span6 item"> <!-- one -->
-      <img src="{{asset('lpage/images/features/Computer.png')}}" alt="Icon" />
-      <div class="content">
-       <h4>Platform for Non-Technical Officer to be technical person with security advantage</h4>
-       <p></p>
-      </div>
-     </div>
-     <div class="span6 item"> <!-- two -->
-      <img src="{{asset('lpage/images/features/Paste.png')}}" alt="Icon" />
-      <div class="content">
-       <h4>Get certificate of certified computer lpage by global tech promoter</h4>
-       <p></p>
-      </div>
-     </div>
-    </div> <!-- End row -->
-    
-    <div class="row">
-     <div class="span6 item"> <!-- one -->
-      <img src="{{asset('lpage/images/features/Template.png')}}" alt="Icon" />
-      <div class="content">
-       <h4>Ask your queries to our cyber security experts directly</h4>
-       <p></p>
-      </div>
-     </div>
-   </div> <!-- End features -->
-   
-   <div class="sep-border"></div> <!-- separator -->
-   
-   <div class="projects">
-    <div class="header">
-     <h2>Process</h2>
-     <p>Aenean dictum pharetra nibh, sodales luctus felis aliquet at.</p>
-    </div>
-    
-  
-   </div> <!-- End projects -->
-   
-   <div class="sep-border"></div> <!-- separator -->
-   
-   <div class="testimonials">
-    <div class="header">
-     <h2>Top Ten Performers</h2>
-     <p></p>
-    </div>
-    
-    <div class="row">
-    <marquee attribute_name="attribute_value">
-     <div class="span3 item"> <!-- one -->
-      <img src="{{asset('lpage/images/testimonials/1.png')}}" alt="Avatar" />
-      <p>Suspendisse ornare luctus tempus nulla nec orci erat, sed consequat lacus dum curabitur vel odio eu sapien fermentum placerat pharetra ac lectus ut erat sapien, lobortis nec mattis eget, tempus sit.</p>
-      <div class="name">
-       <span>John Doen</span>
-      </div>
-     </div>
-     <div class="span3 item"> <!-- two -->
-      <img src="{{asset('lpage/images/testimonials/1.png')}}" alt="Avatar" />
-      <p>Suspendisse ornare luctus tempus nulla nec orci erat, sed consequat lacus dum curabitur vel odio eu sapien fermentum placerat pharetra ac lectus ut erat sapien, lobortis nec mattis eget, tempus sit.</p>
-      <div class="name">
-       <span>John Doen</span>
-      </div>
-     </div>
-     <div class="span3 item"> <!-- three -->
-      <img src="{{asset('lpage/images/testimonials/1.png')}}" alt="Avatar" />
-      <p>Suspendisse ornare luctus tempus nulla nec orci erat, sed consequat lacus dum curabitur vel odio eu sapien fermentum placerat pharetra ac lectus ut erat sapien, lobortis nec mattis eget, tempus sit.</p>
-      <div class="name">
-       <span>John Doen</span>
-      </div>
-     </div>
-     <div class="span3 item"> <!-- four -->
-      <img src="{{asset('lpage/images/testimonials/1.png')}}" alt="Avatar" />
-      <p>Suspendisse ornare luctus tempus nulla nec orci erat, sed consequat lacus dum curabitur vel odio eu sapien fermentum placerat pharetra ac lectus ut erat sapien, lobortis nec mattis eget, tempus sit.</p>
-      <div class="name">
-       <span>John Doen</span>
-      </div>
-     </div>
-     </marquee>
-    </div> <!-- End row -->
-   </div> <!-- End testimonials -->
-   
-  </div> <!-- End container -->
- </div> <!-- End main -->
- 
- <div class="buynow">
-  <div class="container">
-   <a href="#" class="btn" style="margin-bottom: 8px" >15+ cyber Security</a>
-   <a href="#" class="btn" style="margin-bottom: 8px" >5 Modules</a>
-   <a href="#" class="btn" style="margin-bottom: 8px" >150+ questions</a><br>
-   <a href="#" class="btn" style="margin-bottom: 8px" >1 exam</a>
-   <a href="#" class="btn" style="margin-bottom: 8px" >3 Attempts</a>
-   <a href="#" class="btn" style="margin-bottom: 8px" >1 certificate</a><br>
-   <a href="#" class="btn" style="margin-bottom: 8px" >Direct question and answers</a>
+      <div class="login-content">
 
-  </div> <!-- End container -->
- </div> <!-- End buynow -->
- 
- <div id="footer">
-  <div class="container">
-   
- 
-   
-   <div class="sep-border"></div> <!-- separator -->
-   <div class="copyright">&copy; Copyright 2013 Dots Theme. All rights reserved.</div> <!-- Copyright text -->
-   
-  </div> <!-- End container -->
- </div> <!-- End footer -->
- 
- <a href="#" class="scrollup" title="Back to Top!">Scroll</a>
- 
+        <div class="logo text-center"><img src="{{asset('img/gtp.png')}}" alt="" height="150" width="211">
+        <div class="text-center"><h2>Global Tech Promoters</h2></div>
+        </div>
+        <div class="col-md-6" >
+              <div class="owl-carousel" >
+
+              <div class="item">
+                <img src="{{asset('img/cst.jpeg')}}">
+              </div>
+              <div class="item">
+                <img src="{{asset('img/21757.jpeg')}}">
+              </div>
+              <div class="item">
+                 <img src="http://www.septembersea.com/images/Sunrises%20to%20Sunsets/Website%20Psychedelic%20Sunset.jpg">
+              </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="menus">
+              LOGIN HERE
+            </div>  
+          <form method="POST" action="{{url('user/login')}}" accept-charset="UTF-8" name="loginForm" novalidate="" class="loginform ng-valid-minlength ng-dirty ng-valid-parse ng-valid ng-valid-required">
+                  {{Form::token()}}
+
+                  <div class="input-group">
+
+                      <span class="input-group-addon" id="basic-addon1">
+                          <i class="icon icon-user"></i>
+                      </span>
+
+
+
+                      <input class="form-control ng-untouched ng-dirty ng-valid-parse ng-valid ng-valid-required" ng-model="email" required="true" id="email" placeholder="Username/Email" 
+                      ng-class="{&quot;has-error&quot;: loginForm.email.$touched &amp;&amp; loginForm.email.$invalid}" 
+                      name="email" type="text">
+
+                      <div class="validation-error ng-inactive" ng-messages="loginForm.email.$error">
+                          <!-- ngMessage: required -->
+                          <!-- ngMessage: email -->
+                      </div>
+                  </div>
+
+                  <div class="input-group">
+
+                      <span class="input-group-addon" id="basic-addon1"><i class="icon icon-lock"></i></span>
+
+                      <input class="form-control instruction-call ng-untouched ng-valid-minlength ng-dirty ng-valid-parse ng-valid ng-valid-required" placeholder="Password" ng-model="registration.password" required="true" id="password" ng-class="{&quot;has-error&quot;: loginForm.password.$touched &amp;&amp; loginForm.password.$invalid}" ng-minlength="5" name="password" type="password" value="">
+
+                      <div class="validation-error ng-inactive" ng-messages="loginForm.password.$error">
+
+                          <!-- ngMessage: required -->
+
+                          <!-- ngMessage: minlength -->
+
+                      </div>
+
+
+
+                  </div>
+
+                  <div class="text-center buttons">
+
+                      <button type="submit" id="submit_button" class="btn button btn-success btn-lg" ng-disabled="!loginForm.$valid">Login</button>
+
+                      <div class="social-logins">
+                          <a href="#/auth/facebook" class="btn btn-lg btn-facebook btn-full"><i class="fa fa-facebook"></i> Login With Facebook</a>
+
+
+                          <a href="#/auth/google" class="btn btn-lg btn-google-plus btn-full"><i class="fa fa-google-plus"></i>  Login With Google</a>
+                          
+                          <div class="alert alert-info margintop30">
+                              <strong>Note: </strong>
+                              Social Logins Are Only For Student Accounts
+                          </div>
+                      </div>
+
+                  </div>
+          </form>
+
+        </div>
+          
+
+
+    </div>
+    
+        <div class="row">
+
+          <div class="col-md-6"></div>
+          <div class="col-md-6"></div>
+
+        </div>
+
 @endsection
 
 @section('scripts')
-   <script type="text/javascript" src="{{asset('lpage/js/jquery-1.8.3.min.js')}}"></script>
-    <script type='text/javascript' src="{{asset('lpage/js/bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('lpage/js/jquery-easing.js')}}"></script>
-    <script type='text/javascript' src="{{asset('lpage/js/jquery.nivo.slider.pack.js')}}"></script>
-    <script type='text/javascript' src="{{asset('lpage/js/jquery.placeholder.min.js')}}"></script>
-    <script type='text/javascript' src="{{asset('lpage/js/jquery.prettyPhoto.js')}}"></script>
-    <script type='text/javascript' src="{{asset('lpage/js/jquery.flexslider-min.js')}}"></script>
-    <script type='text/javascript' src="{{asset('lpage/js/jquery.backstretch.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('lpage/js/main.js')}}"></script>
+    <script type="text/javascript" src="{{asset('user/js/owl.carousel.min.js')}}"></script>
+    {{-- <script type="text/javascript" src="{{asset('user/js/Chart.js')}}"></script>  --}}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+    loop:true,
+        items:1,
+        margin:30,
+            responsiveClass:true,
+        stagePadding:30,
+        smartSpeed:450,
+    autoplay: true,
+    });
+  });
 
+</script>
 @endsection

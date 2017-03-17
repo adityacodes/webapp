@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="{{asset('user/css/bootstrap-datepicker.min.css')}}">
 	<link href="{{asset('user/css/sweetalert.css')}}" rel="stylesheet" type="text/css">
 
+		
     <link href="{{asset('user/css/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 
 	<!-- Morris Charts CSS --> 

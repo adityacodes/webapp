@@ -19,6 +19,9 @@ body {
  
 	color: #656f7d
 }
+h1 {
+	font-size: 16px;
+}
 a {
 	transition: all .2s ease-in-out;
 	color: #44a1ef;
@@ -217,15 +220,6 @@ aside hr {
 }
 #page-wrapper {
 	padding: 0 10px;
-}
-body:before {
-	background-color: #353f4d;
-	content: "";
-	height: 100%;
-	left: 0;
-	position: fixed;
-	top: 0;
-	width: 120px;
 }
 }
 .navbar-custom {
@@ -542,34 +536,6 @@ ul.alert-dropdown {
 .panel-yellow > a:hover {
 	color: #df8a13;
 }
-.chat {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.chat li {
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 1px dotted #999999;
-}
-.chat li.left .chat-body {
-  margin-left: 60px;
-}
-.chat li.right .chat-body {
-  margin-right: 60px;
-}
-.chat li .chat-body p {
-  margin: 0;
-}
-.panel .slidedown .glyphicon,
-.chat .glyphicon {
-  margin-right: 5px;
-}
-.chat-panel .panel-body {
-  height: 350px;
-  overflow-y: scroll;
-}
-
 hr {
 	margin: 50px 0;
 	border-color: #f8fafb;
@@ -3031,7 +2997,7 @@ h3.total-dues-amount strong {
 	align-items: center;
 	-ms-flex-pack: center;
 	justify-content: center;
-	content: "";
+	content: "ï‹";
 	font-family: "Material Design Icons";
 	color: #fff;
 	font-size: 40px;
@@ -3365,7 +3331,7 @@ h3.total-dues-amount strong {
 }
 .assignment-modal .modal-body ul li:before {
 	font-family: "Material Design Icons";
-	content: '';
+	content: 'ï„°';
 	margin-right: 10px;
 	color: #a9c2ca;
 }
@@ -3397,7 +3363,7 @@ h3.total-dues-amount strong {
 	border-top: 1px solid #fafafa;
 }
 .inbox-massge-nav li:before {
-	content: '';
+	content: 'ï€‰';
 	font-family: "Material Design Icons";
 	position: absolute;
 	left: 0;
