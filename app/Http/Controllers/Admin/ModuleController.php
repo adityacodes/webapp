@@ -6,13 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Module, Validator, Session, App\Course, File;
+use App\Module, Validator, Session, App\Course, File, App\Post;
 
 class ModuleController extends Controller
 {
     private $globalvar = array(
             'mainname' => 'Module',
-            'i' => 1,
             'mainweb' => 'module',
             'model' => 'App\Module',
             'routeindex' => 'gtpadmin.module.index',
@@ -188,6 +187,8 @@ class ModuleController extends Controller
 
         $module->save();
 
+        $courseid = Course::increment('modules',1);
+
         Session::flash('success', $this->globalvar['creationsuccess']);
         return redirect()->route($this->globalvar['routeshow'], $module->id);
 
@@ -341,6 +342,9 @@ class ModuleController extends Controller
         $module = $this->globalvar['model']::find($id);
         $resourceimage = $this->imageresource;
         File::delete($this->globalvar['uploadpath'].'/'.$module->$resourceimage);
+
+        Post::where('module_id', $module->id)->delete();
+
         $module->delete();
 
         Session::flash('Success', $this->globalvar['deletionsuccess']);

@@ -17,7 +17,7 @@ class CreateCoursesTable extends Migration
             $table->string('course_id');
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('modules')->default(0);
+            $table->integer('modules')->default(0);
             $table->string('image');
             $table->boolean('published')->default(0);
             $table->softDeletes();

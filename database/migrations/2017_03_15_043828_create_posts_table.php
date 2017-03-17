@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->text('body');
             $table->boolean('published')->default(0);
             $table->string('image')->nullable();
+            $table->integer('course_id');
             $table->integer('module_id');
             $table->softDeletes();
             $table->timestamps();

@@ -70,58 +70,6 @@
 						</div>
 					</form>
 			
-					<span class="separator"></span>
-			
-					<ul class="notifications">
-						<li>
-							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
-								<i class="fa fa-tasks"></i>
-								<span class="badge">3</span>
-							</a>
-			
-							<div class="dropdown-menu notification-menu large">
-								<div class="notification-title">
-									<span class="pull-right label label-default">3</span>
-									Tasks
-								</div>
-			
-								<div class="content">
-									<ul>
-										<li>
-											<p class="clearfix mb-xs">
-												<span class="message pull-left">Generating Sales Report</span>
-												<span class="message pull-right text-dark">60%</span>
-											</p>
-											<div class="progress progress-xs light">
-												<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-											</div>
-										</li>
-			
-										<li>
-											<p class="clearfix mb-xs">
-												<span class="message pull-left">Importing Contacts</span>
-												<span class="message pull-right text-dark">98%</span>
-											</p>
-											<div class="progress progress-xs light">
-												<div class="progress-bar" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
-											</div>
-										</li>
-			
-										<li>
-											<p class="clearfix mb-xs">
-												<span class="message pull-left">Uploading something big</span>
-												<span class="message pull-right text-dark">33%</span>
-											</p>
-											<div class="progress progress-xs light mb-xs">
-												<div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;"></div>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</li>
-						
-					</ul>
 			
 					<span class="separator"></span>
 			
@@ -131,7 +79,7 @@
 								<i class="fa fa-user fa-2x"></i>
 							</figure>
 							<div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-								<span class="name">{{Auth::user()->name}}</span>
+								<span class="name">{{Auth::guard('admin')->user()->name}}</span>
 								<span class="role">administrator</span>
 							</div>
 			
@@ -142,7 +90,7 @@
 							<ul class="list-unstyled">
 								<li class="divider"></li>
 								<li>
-									<a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fa fa-user"></i> My Profile</a>
+									<a role="menuitem" tabindex="-1" href="{{url('gtpadmin/profile')}}"><i class="fa fa-user"></i> My Profile</a>
 								</li>
 								<li>
 									<a role="menuitem" tabindex="-1" href="{{url('gtpadmin/logout')}}"><i class="fa fa-power-off"></i> Logout</a>
@@ -179,42 +127,39 @@
 										</a>
 									</li>
 
-									
-
-
-									<li class="nav-parent {{Request::is('gtpadmin/post') ||
-									Request::is('gtpadmin/post/*') || Request::is('gtpadmin/module/*') || 
-									Request::is('gtpadmin/module') || Request::is('gtpadmin/course') || Request::is('gtpadmin/course/*') ? 'nav-active nav-expanded':''}}">
-										<a>
-											<i class="fa  fa-bank" aria-hidden="true"></i>
-											<span>Main</span>
-										</a>
-										<ul class="nav nav-children">
-											<li class="{{Request::is('gtpadmin/course') ||
+									<li class="{{Request::is('gtpadmin/course') ||
 											Request::is('gtpadmin/course/*') ? 'nav-active':''}}">
 												<a href="{{url('/gtpadmin/course')}}">
 													 <i class="fa fa-cubes" aria-hidden="true"></i>
-													 Courses
+													 <span>Courses</span>
 												</a>
-											</li>
-
-											<li class="{{Request::is('gtpadmin/module') || Request::is('gtpadmin/module/*') ? 'nav-active':''}}">
-
-												<a href="{{url('/gtpadmin/module')}}">
-													<i class="fa fa-list-alt" aria-hidden="true"></i>
-													 Modules
-												</a>
-											</li>
-											<li class="{{Request::is('gtpadmin/post') ||
-														Request::is('gtpadmin/post/*') ? 'nav-active':''}}">
-												
-												<a href="{{url('/gtpadmin/post')}}">
-													<i class="fa fa-list" aria-hidden="true"></i>
-													 Post
-												</a>
-											</li>
-										</ul>
 									</li>
+
+									<li class="{{Request::is('gtpadmin/module') || Request::is('gtpadmin/module/*') ? 'nav-active':''}}">
+
+										<a href="{{url('/gtpadmin/module')}}">
+											<i class="fa fa-list-alt" aria-hidden="true"></i>
+											 <span>Modules</span>
+										</a>
+									</li>
+									<li class="{{Request::is('gtpadmin/post') ||
+												Request::is('gtpadmin/post/*') ? 'nav-active':''}}">
+										
+										<a href="{{url('/gtpadmin/post')}}">
+											<i class="fa fa-list" aria-hidden="true"></i>
+											 <span>Post</span>
+										</a>
+									</li>
+									<li class="{{Request::is('gtpadmin/trash') ||
+												Request::is('gtpadmin/trash/*') ? 'nav-active':''}}">
+										
+										<a href="{{url('/gtpadmin/trash')}}">
+											<i class="fa  fa-trash-o" aria-hidden="true"></i>
+											 <span>Trash</span>
+										</a>
+									</li>
+
+									
 
 
 								</ul>
@@ -259,15 +204,9 @@
 						<div class="sidebar-right-wrapper">
 			
 							<div class="sidebar-widget widget-calendar">
-								<h6>Upcoming Tasks</h6>
-								<div data-plugin-datepicker data-plugin-skin="dark" ></div>
-			
-								<ul>
-									<li>
-										<time datetime="2014-04-19T00:00+00:00">04/19/2014</time>
-										<span>Company Meeting</span>
-									</li>
-								</ul>
+								<h6>Date</h6>
+								<div data-plugin-datepicker  data-date-start-date="2017.03.17" data-plugin-skin="dark" ></div>
+		
 							</div>
 			
 						</div>
@@ -320,9 +259,9 @@
 		@endif
 		@if(Session::has('warning'))
 			new PNotify({
-				title: '',
+				title: 'Warning',
 				text: '{{Session::get('warning')}}',
-				type: 'info',
+				type: 'warning',
 				shadow: true
 			});
 		@endif

@@ -157,5 +157,7 @@ Route::group(['namespace' => 'Admin',
 		'uses'=>'ModuleController@unpublish'
 	]);
 
+	Route::put('/posted/modulesbycourse', 'PostController@getModulesByCourseId');
+
 
 });

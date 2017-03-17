@@ -8,7 +8,7 @@
 
 @section('header')
 
-{{strtoupper($post->title)}}
+{{$globalvar['mainname'].' - '.$post->id}}
 
 @endsection
 
@@ -25,7 +25,7 @@
 							<a href="#" class="fa fa-times"></a>
 						</div>
 	
-						<h2 class="panel-title">{{strtoupper($post->title)}}</h2>
+						<h2 class="panel-title">{{$globalvar['mainname'].' - '.$post->id}}</h2>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -33,42 +33,30 @@
 	                        <h4 >
 						    	<table class="table table-hover table-bordered" >
 	                                <tbody>
+	                                	<?php $i=1; ?>
+	                                	@foreach($dbresources as $resource => $value)
 
-	                                    <tr>
-	                                        <td>1</td>
-	                                        <td>{{$globalvar['mainname']}} ID</td>
-	                                        <td>
-	                                        	{{ $post->id}}
-	                                        </td>
-	                                    </tr>
-	                                    
-	                                    <tr>
-	                                        <td>2</td>
-	                                        <td>{{$globalvar['mainname']}} Image</td>
-	                                        <td>
-	                                        	@if(isset($post->image))
-	                                        		<img width="150" height="100" src="{{ url('/uploads/post') }}/{{$post->image}}">
-	                                        	@else
-	                                        		<i class="fa fa-user fa-5x"></i>
-	                                        	@endif
-	                                        </td>
-	                                    </tr>
-
-	                                    <tr>
-	                                        <td>3</td>
-	                                        <td>Question</td>
-	                                        <td>
-	                                        	{{ $post->subject}}
-	                                        </td>
-	                                    </tr>
-
-	                                    <tr>
-	                                        <td>4</td>
-	                                        <td>Answer</td>
-	                                        <td>
-	                                        	{{ $post->body}}
-	                                        </td>
-	                                    </tr>
+	                                		@if($resource != 'image')
+			                                    <tr>
+			                                        <td>{{$i}}</td>
+			                                        <td>{{$value}}</td>
+			                                        <td>
+			                                        	{{ $post->$resource}}
+			                                        </td>
+			                                    </tr>
+			                                @else
+			                                	<tr>
+			                                        <td>{{$i}}</td>
+			                                        <td>{{$value}}</td>
+			                                        <td>
+			                                        	@if(isset($post->image))
+			                                        		<img width="150" height="100" src="{{ url('/uploads/post') }}/{{$post->image}}">
+			                                        	@endif
+			                                        </td>
+			                                    </tr>
+			                                @endif
+			                                <?php $i++; ?>
+	                                   	@endforeach
 	                                </tbody>
 	                             </table>
 						    </h4>                    

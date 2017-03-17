@@ -19,7 +19,9 @@
 
 						{{$globalvar['indexpagetitle']}}
 
-						<a href="{{ route($globalvar['routecreate']) }}" class="btn btn-success col-md-offset-9"><i class="glyphicon glyphicon-plus"></i> NEW {{$globalvar['mainname']}}</a>
+						<a href="{{ route($globalvar['routecreate']) }}" class="btn btn-success col-md-offset-9">
+							<i class="glyphicon glyphicon-plus"></i> NEW COURSE
+						</a>
 			            <div >
 			            	<b>{{$globalvar['totalitems']}} : </b> 
 			            	<span class="badge label-success">{{$courses->total()}}</span>
