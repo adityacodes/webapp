@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Course, App\Message, App\Notification, App\Exam, App\User, App\Module;
+use App\Course, App\Message, App\Notification, App\Exam, App\User, App\Module, App\Post;
 use Auth, Hash, Session;
 
 class UserController extends Controller
@@ -26,6 +26,23 @@ class UserController extends Controller
     {
         $courses= Course::orderBy('id', 'desc')->paginate(5);
     	return view('user.courses')->withCourses($courses);
+    }
+
+    public function modules($courseid)
+    {
+        $course = Course::where('slug', $courseid)->first();
+        $modules=Module::where('course_id', $course->id)->get();
+        return view('user.modules')->withModules($modules)->withCourse($course);
+
+    }
+
+    public function posts($courseid, $moduleid)
+    {
+        $course = Course::where('course_id', $courseid)->value('id');
+        $modules= Module::where('module_id', $moduleid)->value('id');
+        $posts = Post::inRandomOrder()->paginate(5);
+        return view('user.posts')->withPosts($posts);
+
     }
 
     public function messages()
@@ -108,12 +125,5 @@ class UserController extends Controller
 
         Session::flash('warning', 'Old Password didnot match with the one in our record.');
         return redirect()->route('user.changepassword');
-    }
-
-    public function modules($coursename)
-    {
-        $courseid = Course::where('slug', $coursename)->pluck('id');
-        $modules = Module::where('course_id', $courseid);
-        return view('user.modules')->withModules($modules);
     }
 }

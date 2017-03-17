@@ -100,7 +100,9 @@
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav side-nav ">
 				<li class="{{Request::is('user/dashboard') ? 'active':''}}"> <a href="{{url('user/dashboard')}}"> <i class="icon-home"></i> Dashboard </a> </li>
-				<li class="{{Request::is('user/courses') ? 'active':''}}"> <a href="{{url('user/courses')}}"> <i class="fa fa-th-list"></i> Courses </a> </li>
+				<li class="{{Request::is('user/courses')||
+							Request::is('user/*/*/posts')||
+							Request::is('user/*/modules') ? 'active':''}}"> <a href="{{url('user/courses')}}"> <i class="fa fa-th-list"></i> Subjects </a> </li>
 				<li>
 					<a data-toggle="collapse" data-target="#exams"><i class=" icon-exams"></i> Exams </a> 
 					<ul id="exams" class="collapse sidemenu-dropdown">

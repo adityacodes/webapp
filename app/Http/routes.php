@@ -107,6 +107,8 @@ Route::group(['namespace' => 'User',
 		'uses' => 'UserController@modules'
 	]);
 
+	Route::get('/{course}/{moduleid}/posts', 'UserController@posts');
+
 });
 
 /*
